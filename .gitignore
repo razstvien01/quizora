@@ -5,3 +5,4 @@ exam_files
 
 #* Cache
 services/__pycache__/csv_services.cpython-310.pyc
+ui/__pycache__
