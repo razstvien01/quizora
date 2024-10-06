@@ -1,1 +1,7 @@
-.venv
+.venv/
+
+#* CSV Files
+exam_files
+
+#* Cache
+services/__pycache__/csv_services.cpython-310.pyc
