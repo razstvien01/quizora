@@ -22,13 +22,13 @@ CSV-ExamInjector is a simple command-line application designed to facilitate the
    ```
 
 2. Navigate to the project directory:
-  ```bash
-  cd CSV-ExamInjector
-  ```
+    ```bash
+    cd CSV-ExamInjector
+    ```
 
 ### Installation
 1. Run the application:
-  ```bash
-  python main.py
-  ```
+    ```bash
+    python main.py
+    ```
 2. Follow the on-screen instructions to import exam paths and load questions.
