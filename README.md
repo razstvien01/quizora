@@ -25,6 +25,23 @@ CSV-ExamInjector is a simple command-line application designed to facilitate the
     ```bash
     cd CSV-ExamInjector
     ```
+    
+3. **Set up a virtual environment** (recommended):
+   - For Windows:
+     ```bash
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+   - For Linux or macOS:
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+
+4. Install the required packages:
+   ```bash
+   pip install -r requirements.txt\
+   ```
 
 ### Installation
 1. Run the application:
