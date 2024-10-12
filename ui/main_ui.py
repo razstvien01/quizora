@@ -1,7 +1,7 @@
 import os
 
 def print_intro():
-  os.system('clear')
+  # os.system('clear')
   
   print("=" * 50)
   print(" Welcome to CSV-Exam Injector! ".center(50))
