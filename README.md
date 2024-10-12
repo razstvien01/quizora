@@ -40,7 +40,7 @@ CSV-ExamInjector is a simple command-line application designed to facilitate the
 
 4. Install the required packages:
    ```bash
-   pip install -r requirements.txt\
+   pip install -r requirements.txt
    ```
 
 ### Installation
