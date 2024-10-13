@@ -14,7 +14,9 @@ def print_menu():
   print("1. Import CSV".ljust(30) + " - Load questions")
   print("2. Start Exam".ljust(30) + " - Begin a test")
   print("3. View Scores".ljust(30) + " - Review results")
-  print("4. Exit".ljust(30) + " - Close the console") 
+  print("4. Import XLSX".ljust(29) + " - Import XLSX") 
+  print("5. View Questions".ljust(30) + " - View Questions") 
+  print("6. Exit".ljust(30) + " - Close the console") 
   
 def menu():
   print_intro()
