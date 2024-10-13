@@ -9,7 +9,7 @@ def main():
   questions = []
 
   xlsx_loader = XLSXLoader()
-  
+
   while True:
     clear_screen()
     menu()
@@ -36,13 +36,22 @@ def main():
     elif choice == '4':
       clear_screen()
       print("\nYou selected to load xlsx paths.")
-      curr_exam_path = xlsx_loader.load_exam_paths()
+      xlsx_loader.load_exam_paths()
+
+    elif choice == '5':
+      clear_screen()
+      print("\nYou selected to load questions.")
+      loaded = xlsx_loader.load_questions()
 
     elif choice == '6':
       clear_screen()
+      print("\nYou selected to view questions.")
+      xlsx_loader.ask_questions()
+
+    elif choice == '7':
+      clear_screen()
       print("\nExiting the application. Goodbye!")
       break
-
 
     else:
       print("\nInvalid option. Please select again.")
