@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from numpy import result_type
 import pandas as pd
 from data.topicData import IdentificationQuestion, QuestionGroup, Topic, TrueOrFalseQuestion
@@ -14,10 +15,8 @@ class ExcelService:
         self.sheet_path = excel_path
         self.excel_file = pd.ExcelFile(excel_path)
         
-        topicName = os.path.basename(excel_path)
+        topicName = Path(excel_path).stem
         self.data : Topic = Topic(Name=topicName)
-        print(self.data)
-
 
     def load(self):
         # Check question groups
@@ -33,6 +32,8 @@ class ExcelService:
         self._load_trueorfalse(question_group)
         self._load_identification(question_group)
 
+        self.data.QuestionGroups.append(question_group)
+
     def _load_identification(self, question_group : QuestionGroup):
         sheet_name = question_group.Name + "@identification"
 
@@ -45,7 +46,7 @@ class ExcelService:
             question = IdentificationQuestion(Question=row[self.QUESTION_COLUMN], 
                                               Answer=row[self.ANSWER_COLUMN], 
                                               Points=row[self.POINTS_COLUMN],
-                                              IsCaseSensitive=row[self.ISCASESENSITIVE_COLUMN])
+                                              IsCaseSensitive=row[self.ISCASESENSITIVE_COLUMN] == 'T')
             question_group.IdentificationQuestions.append(question)
         
 
@@ -71,6 +72,6 @@ class ExcelService:
 
 
     def _remove_sheet_type(self, sheet_name : str):
-      result = sheet_name.replace("@trueorfalse", "").replace("@identification", "")
+      result = sheet_name.replace("@trueorfalse", "").replace("@identification", "").replace("@multiplechoice", "")
       return result
 

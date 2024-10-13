@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional, Union
+
 
 @dataclass
 class TrueOrFalseQuestion:
@@ -14,6 +15,19 @@ class IdentificationQuestion:
     Points: int
     IsCaseSensitive: bool
 
+@dataclass 
+class QuestionDetail:
+  Topic: str
+  QuestionGroup: str
+  Question: Union[TrueOrFalseQuestion, IdentificationQuestion]
+
+@dataclass
+class ExamDetails:
+  TotalPossibleScore: Optional[int] = 0
+  TopicsCovered: List[str] = field(default_factory=list)
+  QuestionDetails: List[QuestionDetail] = field(default_factory=list)
+  
+
 @dataclass
 class QuestionGroup:
     Name: str
@@ -25,4 +39,8 @@ class Topic:
   Name: str
   QuestionGroups: List[QuestionGroup] = field(default_factory=list)
 
+@dataclass 
+class XLSXInfo:
+  Alias: str
+  Topics : List[Topic] = field(default_factory=list)
 
