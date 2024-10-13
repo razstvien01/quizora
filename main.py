@@ -2,10 +2,13 @@ from pages.menu import menu
 from pages.csv_loader import load_exam_paths, load_questions
 from pages.questions import ask_questions
 from helper.utils import clear_screen, pause
+from pages.xlsx_loader import XLSXLoader
 
 def main():
   curr_exam_path = {}
   questions = []
+
+  xlsx_loader = XLSXLoader()
   
   while True:
     clear_screen()
@@ -32,8 +35,14 @@ def main():
 
     elif choice == '4':
       clear_screen()
+      print("\nYou selected to load xlsx paths.")
+      curr_exam_path = xlsx_loader.load_exam_paths()
+
+    elif choice == '6':
+      clear_screen()
       print("\nExiting the application. Goodbye!")
       break
+
 
     else:
       print("\nInvalid option. Please select again.")

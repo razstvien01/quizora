@@ -1,4 +1,5 @@
 .venv/
+venv/
 
 #* CSV Files
 exam_files
