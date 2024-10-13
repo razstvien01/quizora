@@ -37,9 +37,10 @@ class XLSXLoader:
         pause()
       return self.curr_exam_path
 
-    def load_questions(curr_exam_path):
+
+    def load_questions():
       questions = []
-      if curr_exam_path:
+      if self.curr_exam_path:
         print("\nSelect a path to load for the exam:")
         for i, (alias, path) in enumerate(curr_exam_path.items()):
           print(f"{i + 1}. {alias} -> {path}")
@@ -50,12 +51,12 @@ class XLSXLoader:
           load_choice = input("Do you want to load all files in this path? (Y/N): ")
 
           if load_choice in ("Y", "y"):
-            csv_files = [filename for filename in os.listdir(selected_path) if filename.endswith('.csv')]
-            if not csv_files:
-              print("\nNo CSV files found in the selected path.")
+            xlsx_files = [filename for filename in os.listdir(selected_path) if filename.endswith('.xlsx')]
+            if not xlsx_files:
+              print("\nNo XLSX files found in the selected path.")
               pause()
             else:
-              for filename in csv_files:
+              for filename in xlsx_files:
                 file_path = os.path.join(selected_path, filename)
                 questions.extend(load_questions_from_csv(file_path))
               print("\nAll exam files have been successfully imported.")
