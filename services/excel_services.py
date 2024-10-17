@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 from numpy import result_type
 import pandas as pd
-from data.topicData import IdentificationQuestion, QuestionGroup, Topic, TrueOrFalseQuestion
+from data.excelData import MultipleChoiceGroupedDataRow
+from data.topicData import IdentificationQuestion, MultipleAnswerQuestion, MultipleChoiceQuestion, QuestionGroup, Topic, TrueOrFalseQuestion
 
 class ExcelService:
     QUESTION_COLUMN = "Questions"
@@ -11,12 +12,25 @@ class ExcelService:
 
     ISCASESENSITIVE_COLUMN = "IsCaseSensitive"
 
+    CHOICE_COLUMN = "Choice"
+    CHOICE_TYPE_COLUMN = "ChoiceType"
+    NOTE_COLUMN = "Note"
+
+    CORRECT_VALUE = "Correct"
+    WRONG_VALUE = "Wrong"
+
+    TRUE_OR_FALSE_PREFIX = "@trueorfalse"
+    IDENTIFICATION_PREFIX = "@identification"
+    MULTIPLE_CHOICE_PREFIX = "@multiplechoice"
+    MULTIPLE_ANSWERS_PREFIX = "@multipleanswers"
+
     def __init__(self, excel_path : str):
         self.sheet_path = excel_path
         self.excel_file = pd.ExcelFile(excel_path)
         
         topicName = Path(excel_path).stem
         self.data : Topic = Topic(Name=topicName)
+
 
     def load(self):
         # Check question groups
@@ -31,11 +45,70 @@ class ExcelService:
         
         self._load_trueorfalse(question_group)
         self._load_identification(question_group)
+        self._load_multiple_choice(question_group)
+        self._load_multiple_answer(question_group)
 
         self.data.QuestionGroups.append(question_group)
 
+
+    def _load_multiple_answer(self, question_group : QuestionGroup):
+        sheet_name = question_group.Name + self.MULTIPLE_ANSWERS_PREFIX
+
+        if(sheet_name not in self._get_sheets()):
+            return
+
+        df = pd.read_excel(self.sheet_path, sheet_name)
+        
+        grouped_questions = df.groupby(self.QUESTION_COLUMN).apply(lambda g: [
+            MultipleChoiceGroupedDataRow(
+                Points=row[self.POINTS_COLUMN],
+                Choice=row[self.CHOICE_COLUMN],
+                ChoiceType=row[self.CHOICE_TYPE_COLUMN]) for _, row in g.iterrows()])
+
+        for name, grouped_data in grouped_questions.items():
+            points = grouped_data[0].Points
+            correct_answer_rows = filter(lambda row: row.ChoiceType.lower() == self.CORRECT_VALUE.lower(), grouped_data)
+            correct_answers = list(map(lambda row: row.Choice, correct_answer_rows))
+
+            wrong_answers_rows = filter(lambda row: row.ChoiceType.lower() == self.WRONG_VALUE.lower(), grouped_data)
+            wrong_answers = list(map(lambda row: row.Choice, wrong_answers_rows))
+
+            question = MultipleAnswerQuestion(Question=name, 
+                                              Points=points, 
+                                              CorrectAnswers=correct_answers,
+                                              WrongAnswers=wrong_answers)
+            question_group.MultipleAnswerQuestions.append(question)
+
+
+    def _load_multiple_choice(self, question_group : QuestionGroup):
+        sheet_name = question_group.Name + self.MULTIPLE_CHOICE_PREFIX
+
+        if(sheet_name not in self._get_sheets()):
+            return
+
+        df = pd.read_excel(self.sheet_path, sheet_name)
+        
+        grouped_questions = df.groupby(self.QUESTION_COLUMN).apply(lambda g: [
+            MultipleChoiceGroupedDataRow(
+                Points=row[self.POINTS_COLUMN],
+                Choice=row[self.CHOICE_COLUMN],
+                ChoiceType=row[self.CHOICE_TYPE_COLUMN])  for _, row in g.iterrows()])
+
+        for name, grouped_data in grouped_questions.items():
+            points = grouped_data[0].Points
+            correct_answer =  next((row.Choice for row in grouped_data if row.ChoiceType.lower() == self.CORRECT_VALUE.lower()), None)
+            wrong_answers_rows = filter(lambda row: row.ChoiceType.lower() == self.WRONG_VALUE.lower(), grouped_data)
+            wrong_answers = list(map(lambda row: row.Choice, wrong_answers_rows))
+
+            question = MultipleChoiceQuestion(Question=name, 
+                                              Points=points, 
+                                              CorrectAnswer=correct_answer,
+                                              WrongAnswers=wrong_answers)
+            question_group.MultipleChoiceQuestions.append(question)
+
+
     def _load_identification(self, question_group : QuestionGroup):
-        sheet_name = question_group.Name + "@identification"
+        sheet_name = question_group.Name + self.IDENTIFICATION_PREFIX
 
         if(sheet_name not in self._get_sheets()):
             return
@@ -48,10 +121,10 @@ class ExcelService:
                                               Points=row[self.POINTS_COLUMN],
                                               IsCaseSensitive=row[self.ISCASESENSITIVE_COLUMN] == 'T')
             question_group.IdentificationQuestions.append(question)
-        
+
 
     def _load_trueorfalse(self, question_group : QuestionGroup):
-        sheet_name = question_group.Name + "@trueorfalse"
+        sheet_name = question_group.Name + self.TRUE_OR_FALSE_PREFIX
 
         if(sheet_name not in self._get_sheets()):
             return
@@ -72,6 +145,9 @@ class ExcelService:
 
 
     def _remove_sheet_type(self, sheet_name : str):
-      result = sheet_name.replace("@trueorfalse", "").replace("@identification", "").replace("@multiplechoice", "")
+      result = sheet_name.replace(self.TRUE_OR_FALSE_PREFIX, "") \
+                         .replace(self.IDENTIFICATION_PREFIX, "") \
+                         .replace(self.MULTIPLE_CHOICE_PREFIX, "") \
+                         .replace(self.MULTIPLE_ANSWERS_PREFIX, "")
       return result
 

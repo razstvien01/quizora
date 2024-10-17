@@ -2,11 +2,11 @@ import os
 import random
 from typing import List
 from collections import deque
-from data.topicData import ExamDetails, IdentificationQuestion, TrueOrFalseQuestion,XLSXInfo, QuestionDetail
+from data.topicData import ExamDetails, IdentificationQuestion, MultipleAnswerQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion,XLSXInfo, QuestionDetail
 from helper.utils import clear_screen, pause
 from services.excel_services import ExcelService
 
-class XLSXLoader:
+class XLSXMenu:
     def __init__(self):
         self.curr_exam_path = {}
         self.xlsx_infos : List[XLSXInfo] = []
@@ -111,6 +111,7 @@ class XLSXLoader:
 
       return self.xlsx_infos
 
+
     def ask_questions(self):
         question_details = self._get_question_infos()
         print("Topics Covered: ", )
@@ -138,6 +139,7 @@ class XLSXLoader:
             print(question.Question)
 
             is_correct = False
+            is_skipped = False
 
             if isinstance(question, TrueOrFalseQuestion):
                 input_done = False
@@ -148,7 +150,7 @@ class XLSXLoader:
                     input_done = True
 
                   elif(answer in ('S', 's')):
-                     questions.append(question_detail)
+                     is_skipped = True
                      input_done = True
 
                   else:
@@ -160,7 +162,88 @@ class XLSXLoader:
                 if(answer.upper() != "N/A"):
                   is_correct = answer.lower().strip() == question.Answer.lower().strip() if not question.IsCaseSensitive else answer.strip() == question.Answer.strip()
                 else:
-                  questions.append(question_detail)
+                  is_skipped = True
+
+            if isinstance(question, MultipleChoiceQuestion):
+                input_done = False
+                while not input_done:
+                  choices = question.WrongAnswers + [question.CorrectAnswer]
+                  random.shuffle(choices)
+                  for index, choice in enumerate(choices):
+                    print(index + 1, ": ", choice)
+                  action = input("(S to skip) Answer: ")
+
+                  if(action in ('S', 's')):
+                     is_skipped = True
+                     input_done = True
+                  else:
+                      try:
+                        answer_int = int(action)
+                        if(answer_int < 1 or answer_int > len(choices)):
+                            print("Input not in Range")
+                            continue
+
+                        selected_choice = choices[answer_int - 1]
+                        is_correct = selected_choice == question.CorrectAnswer
+                        input_done = True
+
+                      except:
+                        print("Invalid Input")
+
+            if isinstance(question, MultipleAnswerQuestion):
+                input_done = False
+                inputs = []
+                choices = question.WrongAnswers + question.CorrectAnswers
+                random.shuffle(choices)
+                while not input_done:
+                  for index, choice in enumerate(choices):
+                    print(index + 1, ": ", choice, " (Selected)" if index in inputs else "")
+                  action = input("(S to skip) (C to confirm) (A to Select) (D to Deselect) Choose Action: ")
+
+                  if(action in ('S', 's')):
+                    is_skipped = True
+                    input_done = True
+                  elif(action in ('C', 'c')):
+                    selected_answers = list(map(lambda index: choices[index], inputs))
+                    is_correct = all(correct_answer in selected_answers for correct_answer in question.CorrectAnswers)
+                    input_done = True
+
+                  elif(action in ('A', 'a', 'D', 'd')):
+                      choice_selected = False
+
+                      while not choice_selected:
+                        answer = input("(X to go back) Select choice:")
+                        if(answer in ('X', 'x')):
+                            choice_selected = True
+                        else:
+                            try:
+                              answer_int = int(answer)
+                              if(answer_int < 1 or answer_int > len(choices)):
+                                  print("Input not in Range")
+                                  continue
+                              
+                              answer_index = answer_int - 1
+
+                              if(answer_index in inputs and action in ('A', 'a')):
+                                  print("Input already selected")
+                                  continue 
+                              
+                              if(answer_index not in inputs and action in ('D', 'd')):
+                                  print("Input is not selected")
+                                  continue 
+
+                              if(action in ('A', 'a')):
+                                  inputs.append(answer_index )
+                              else:
+                                  inputs.remove(answer_index )
+                              choice_selected = True
+                            except:
+                              print("Invalid Input")
+                  else:
+                    print("Invalid Action")
+
+            if(is_skipped):
+              questions.append(question_detail)
 
             if(is_correct):
               print("Correct")
@@ -187,6 +270,16 @@ class XLSXLoader:
                 exam_details.TotalPossibleScore = exam_details.TotalPossibleScore + question.Points
 
               for question in question_group.IdentificationQuestions:
+                question_detail = QuestionDetail(Topic = topic.Name, QuestionGroup = question_group.Name, Question=question)
+                exam_details.TotalPossibleScore = exam_details.TotalPossibleScore + question.Points
+                exam_details.QuestionDetails.append(question_detail)
+
+              for question in question_group.MultipleChoiceQuestions:
+                question_detail = QuestionDetail(Topic = topic.Name, QuestionGroup = question_group.Name, Question=question)
+                exam_details.TotalPossibleScore = exam_details.TotalPossibleScore + question.Points
+                exam_details.QuestionDetails.append(question_detail)
+
+              for question in question_group.MultipleAnswerQuestions:
                 question_detail = QuestionDetail(Topic = topic.Name, QuestionGroup = question_group.Name, Question=question)
                 exam_details.TotalPossibleScore = exam_details.TotalPossibleScore + question.Points
                 exam_details.QuestionDetails.append(question_detail)
