@@ -4,7 +4,6 @@ from typing import List
 from collections import deque
 from data.topicData import ExamDetails, IdentificationQuestion, MultipleAnswerQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion,XLSXInfo, QuestionDetail
 from helper.utils import clear_screen, pause
-from services import excel_services
 from services.excel_services import ExcelService
 
 class XLSXMenu:
@@ -145,12 +144,12 @@ class XLSXMenu:
             if isinstance(question, TrueOrFalseQuestion):
                 input_done = False
                 while not input_done:
-                  action = input("(S to skip) Answer (T/F): ")
-                  if(action in ('T', 't', 'F', 'f')):
-                    is_correct = action.lower() == question.Answer.lower() 
+                  answer = input("(S to skip) Answer (T/F): ")
+                  if(answer in ('T', 't', 'F', 'f')):
+                    is_correct = answer.lower() == question.Answer.lower() 
                     input_done = True
 
-                  elif(action in ('S', 's')):
+                  elif(answer in ('S', 's')):
                      is_skipped = True
                      input_done = True
 
@@ -159,9 +158,9 @@ class XLSXMenu:
                      continue
 
             if isinstance(question, IdentificationQuestion):
-                action = input("(N/A to skip) Answer: ")
-                if(action.upper() != "N/A"):
-                  is_correct = action.lower().strip() == question.Answer.lower().strip() if not question.IsCaseSensitive else action.strip() == question.Answer.strip()
+                answer = input("(N/A to skip) Answer: ")
+                if(answer.upper() != "N/A"):
+                  is_correct = answer.lower().strip() == question.Answer.lower().strip() if not question.IsCaseSensitive else answer.strip() == question.Answer.strip()
                 else:
                   is_skipped = True
 

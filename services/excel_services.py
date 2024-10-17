@@ -31,6 +31,7 @@ class ExcelService:
         topicName = Path(excel_path).stem
         self.data : Topic = Topic(Name=topicName)
 
+
     def load(self):
         # Check question groups
         for question_group in self._get_question_groups():
