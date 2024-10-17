@@ -31,7 +31,6 @@ class ExcelService:
         topicName = Path(excel_path).stem
         self.data : Topic = Topic(Name=topicName)
 
-
     def load(self):
         # Check question groups
         for question_group in self._get_question_groups():
@@ -121,7 +120,6 @@ class ExcelService:
                                               Points=row[self.POINTS_COLUMN],
                                               IsCaseSensitive=row[self.ISCASESENSITIVE_COLUMN] == 'T')
             question_group.IdentificationQuestions.append(question)
-
 
 
     def _load_trueorfalse(self, question_group : QuestionGroup):
