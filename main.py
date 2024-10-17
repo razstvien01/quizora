@@ -1,14 +1,15 @@
+from data.topicData import QuestionGroup
 from pages.menu import menu
 from pages.csv_loader import load_exam_paths, load_questions
 from pages.questions import ask_questions
 from helper.utils import clear_screen, pause
-from pages.xlsx_loader import XLSXLoader
+from pages.xlsx_menu import XLSXMenu
 
 def main():
   curr_exam_path = {}
   questions = []
 
-  xlsx_loader = XLSXLoader()
+  xlsx_menu = XLSXMenu()
 
   while True:
     clear_screen()
@@ -36,17 +37,17 @@ def main():
     elif choice == '4':
       clear_screen()
       print("\nYou selected to load xlsx paths.")
-      xlsx_loader.load_exam_paths()
+      xlsx_menu.load_exam_paths()
 
     elif choice == '5':
       clear_screen()
       print("\nYou selected to load questions.")
-      loaded = xlsx_loader.load_questions()
+      xlsx_menu.load_questions()
 
     elif choice == '6':
       clear_screen()
       print("\nYou selected to view questions.")
-      xlsx_loader.ask_questions()
+      xlsx_menu.ask_questions()
 
     elif choice == '7':
       clear_screen()

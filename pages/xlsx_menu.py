@@ -2,11 +2,11 @@ import os
 import random
 from typing import List
 from collections import deque
-from data.topicData import ExamDetails, IdentificationQuestion, TrueOrFalseQuestion,XLSXInfo, QuestionDetail
+from data.topicData import ExamDetails, IdentificationQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion,XLSXInfo, QuestionDetail
 from helper.utils import clear_screen, pause
 from services.excel_services import ExcelService
 
-class XLSXLoader:
+class XLSXMenu:
     def __init__(self):
         self.curr_exam_path = {}
         self.xlsx_infos : List[XLSXInfo] = []
@@ -111,6 +111,7 @@ class XLSXLoader:
 
       return self.xlsx_infos
 
+
     def ask_questions(self):
         question_details = self._get_question_infos()
         print("Topics Covered: ", )
@@ -138,6 +139,7 @@ class XLSXLoader:
             print(question.Question)
 
             is_correct = False
+            is_skipped = False
 
             if isinstance(question, TrueOrFalseQuestion):
                 input_done = False
@@ -148,7 +150,7 @@ class XLSXLoader:
                     input_done = True
 
                   elif(answer in ('S', 's')):
-                     questions.append(question_detail)
+                     is_skipped = True
                      input_done = True
 
                   else:
@@ -160,7 +162,24 @@ class XLSXLoader:
                 if(answer.upper() != "N/A"):
                   is_correct = answer.lower().strip() == question.Answer.lower().strip() if not question.IsCaseSensitive else answer.strip() == question.Answer.strip()
                 else:
-                  questions.append(question_detail)
+                  is_skipped = True
+
+            if isinstance(question, MultipleChoiceQuestion):
+                input_done = False
+                while not input_done:
+                  choices = question.WrongAnswers + [question.CorrectAnswer]
+                  for index, choice in enumerate(choices):
+                    print(index + 1, ": ", choice)
+                  answer = input("(S to skip) Answer: ")
+                  
+                  if(answer )
+                  # if(answer.upper() != "N/A"):
+                  #   is_correct = answer.lower().strip() == question.Answer.lower().strip() if not question.IsCaseSensitive else answer.strip() == question.Answer.strip()
+                  # else:
+                  #   is_skipped = True
+
+            if(is_skipped):
+              questions.append(question_detail)
 
             if(is_correct):
               print("Correct")
@@ -187,6 +206,16 @@ class XLSXLoader:
                 exam_details.TotalPossibleScore = exam_details.TotalPossibleScore + question.Points
 
               for question in question_group.IdentificationQuestions:
+                question_detail = QuestionDetail(Topic = topic.Name, QuestionGroup = question_group.Name, Question=question)
+                exam_details.TotalPossibleScore = exam_details.TotalPossibleScore + question.Points
+                exam_details.QuestionDetails.append(question_detail)
+
+              for question in question_group.MultipleChoiceQuestions:
+                question_detail = QuestionDetail(Topic = topic.Name, QuestionGroup = question_group.Name, Question=question)
+                exam_details.TotalPossibleScore = exam_details.TotalPossibleScore + question.Points
+                exam_details.QuestionDetails.append(question_detail)
+
+              for question in question_group.MultipleAnswerQuestions:
                 question_detail = QuestionDetail(Topic = topic.Name, QuestionGroup = question_group.Name, Question=question)
                 exam_details.TotalPossibleScore = exam_details.TotalPossibleScore + question.Points
                 exam_details.QuestionDetails.append(question_detail)
