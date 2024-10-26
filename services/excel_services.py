@@ -85,8 +85,11 @@ class ExcelService:
 
         if(sheet_name not in self._get_sheets()):
             return
-
+        
+        
         df = pd.read_excel(self.sheet_path, sheet_name)
+        
+        # df = df.ffill()
         
         grouped_questions = df.groupby(self.QUESTION_COLUMN).apply(lambda g: [
             MultipleChoiceGroupedDataRow(
@@ -150,4 +153,3 @@ class ExcelService:
                          .replace(self.MULTIPLE_CHOICE_PREFIX, "") \
                          .replace(self.MULTIPLE_ANSWERS_PREFIX, "")
       return result
-
