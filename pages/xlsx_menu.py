@@ -71,10 +71,8 @@ class XLSXMenu:
                 excel_service = ExcelService(file_path)
                 topic = excel_service.load()
                 xlsx_info.Topics.append(topic)
-                
-                # questions.extend(load_questions_from_csv(file_path))
+              
               self.xlsx_infos.append(xlsx_info)
-              print(self.xlsx_infos)
               print("\nAll exam files have been successfully imported.")
               pause()
           else:
@@ -245,9 +243,11 @@ class XLSXMenu:
               questions.append(question_detail)
 
             if(is_correct):
-              print("Correct")
+              print("Correct!")
               current_score = current_score + question.Points
-             
+            else:
+              print("Wrong!")
+            
             pause()
 
         print("Total Score: ", current_score, "/", total_score)

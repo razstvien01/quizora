@@ -59,6 +59,8 @@ class ExcelService:
 
         df = pd.read_excel(self.sheet_path, sheet_name)
         
+        df = df.ffill()
+        
         grouped_questions = df.groupby(self.QUESTION_COLUMN).apply(lambda g: [
             MultipleChoiceGroupedDataRow(
                 Points=row[self.POINTS_COLUMN],
@@ -89,7 +91,7 @@ class ExcelService:
         
         df = pd.read_excel(self.sheet_path, sheet_name)
         
-        # df = df.ffill()
+        df = df.ffill()
         
         grouped_questions = df.groupby(self.QUESTION_COLUMN).apply(lambda g: [
             MultipleChoiceGroupedDataRow(
