@@ -13,7 +13,6 @@ class XLSXMenu:
         self.exam_details : ExamDetails = None
 
     def load_exam_paths(self):
-      print("\nYou selected to import a XLSX file.")
       inputDone = False
       while not inputDone:
         path = input("Please input the exam folder path: ")
@@ -25,7 +24,7 @@ class XLSXMenu:
             if choice in ("N", "n"):
                  inputDone = True
           else: 
-            alias = os.path.dirname(path)
+            alias = os.path.basename(path)
 
             if alias not in self.curr_exam_path:
               self.curr_exam_path[alias] = path
@@ -48,11 +47,11 @@ class XLSXMenu:
       self.xlsx_infos= []
 
       if self.curr_exam_path:
-        print("\nSelect a path to load for the exam:")
+        print("\nSelect a folder to load for the exam:")
         for i, (alias, path) in enumerate(self.curr_exam_path.items()):
           print(f"{i + 1}. {alias} -> {path}")
         
-        file_choice = input("\nEnter the number of the path to load the exam from: ")
+        file_choice = input("\nEnter the number of folder to load the exam from: ")
         try:
           file_choice_int = int(file_choice)
           selected_path = list(self.curr_exam_path.values())[file_choice_int - 1]
@@ -112,7 +111,7 @@ class XLSXMenu:
       return self.xlsx_infos
 
 
-    def ask_questions(self):
+    def start_exam(self):
         question_details = self._get_question_infos()
         print("Topics Covered: ", )
         for topic in question_details.TopicsCovered:
@@ -212,7 +211,7 @@ class XLSXMenu:
                       choice_selected = False
 
                       while not choice_selected:
-                        answer = input("(X to go back) Select choice:")
+                        answer = input("(X to go back) Select choice: ")
                         if(answer in ('X', 'x')):
                             choice_selected = True
                         else:
