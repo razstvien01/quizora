@@ -5,12 +5,26 @@ from collections import deque
 from data.topicData import ExamDetails, IdentificationQuestion, MultipleAnswerQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion,XLSXInfo, QuestionDetail
 from helper.utils import clear_screen, pause
 from services.excel_services import ExcelService
+from repositories.path_repo import PathRepo
 
 class XLSXMenu:
     def __init__(self):
-        self.curr_exam_path = {}
+        self.path_repo = PathRepo()
+        self.exam_paths = self.path_repo.get_exam_paths()
         self.xlsx_infos : List[XLSXInfo] = []
         self.exam_details : ExamDetails = None
+        
+    def view_exam_paths(self):
+      self.exam_paths = self.path_repo.get_exam_paths()
+      
+      if self.exam_paths:
+        print("Excel Folders:")
+        for i, (alias, path) in enumerate(self.exam_paths.items()):
+          print(f"{i + 1}. {alias} -> {path}")
+      else:
+        print("There are no saved excel folder paths")
+      print()
+      pause()
 
     def load_exam_paths(self):
       inputDone = False
@@ -26,8 +40,9 @@ class XLSXMenu:
           else: 
             alias = os.path.basename(path)
 
-            if alias not in self.curr_exam_path:
-              self.curr_exam_path[alias] = path
+            if alias not in self.exam_paths:
+              if self.path_repo.save_exam_path(alias, path):
+                self.exam_paths[alias] = path
             else:
               print("The alias you entered already exists.")
             
@@ -40,22 +55,22 @@ class XLSXMenu:
         else:
           print("Invalid path. Please enter a valid path.")
         pause()
-      return self.curr_exam_path
+      return self.exam_paths
 
 
     def load_questions(self):
       self.xlsx_infos= []
 
-      if self.curr_exam_path:
+      if self.exam_paths:
         print("\nSelect a folder to load for the exam:")
-        for i, (alias, path) in enumerate(self.curr_exam_path.items()):
+        for i, (alias, path) in enumerate(self.exam_paths.items()):
           print(f"{i + 1}. {alias} -> {path}")
         
         file_choice = input("\nEnter the number of folder to load the exam from: ")
         try:
           file_choice_int = int(file_choice)
-          selected_path = list(self.curr_exam_path.values())[file_choice_int - 1]
-          selected_alias = list(self.curr_exam_path.values())[file_choice_int - 1]
+          selected_path = list(self.exam_paths.values())[file_choice_int - 1]
+          selected_alias = list(self.exam_paths.values())[file_choice_int - 1]
           load_choice = input("Do you want to load all files in this path? (Y/N): ")
 
           if load_choice in ("Y", "y"):
@@ -110,6 +125,11 @@ class XLSXMenu:
 
 
     def start_exam(self):
+        if not self.xlsx_infos:
+          print("You need to load the desired excel files first before taking an exam.\n")
+          pause()
+          return
+          
         question_details = self._get_question_infos()
         print("Topics Covered: ", )
         for topic in question_details.TopicsCovered:
