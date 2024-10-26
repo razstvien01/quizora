@@ -9,3 +9,5 @@ services/__pycache__/csv_services.cpython-310.pyc
 ui/__pycache__
 pages/__pycache__
 helper/__pycache__
+services/__pycache__/
+data/__pycache__/
