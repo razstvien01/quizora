@@ -3,10 +3,11 @@ import sqlite3
 class MainRepo:
   def __init__(self):
     self.DB_PATH = "system.db"
+    self.initialize_db()
   
   def initialize_db(self):
     try:
-      with sqlite3.connect(self.db_path) as conn:
+      with sqlite3.connect(self.DB_PATH) as conn:
         cursor = conn.cursor()
         
         cursor.execute('''

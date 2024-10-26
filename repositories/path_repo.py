@@ -8,7 +8,7 @@ class PathRepo(MainRepo):
     
   def save_exam_path(self, alias: str, path: str) -> bool:
     try:
-      with sqlite3.connect(self, self.DB_PATH) as conn:
+      with sqlite3.connect(self.DB_PATH) as conn:
         cursor = conn.cursor()
         
         cursor.execute('''
