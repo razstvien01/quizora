@@ -30,6 +30,7 @@ class MultipleAnswerQuestion:
     Points: int
     CorrectAnswers: List[str]
     WrongAnswers: List[str]
+    Notes: str
 
 @dataclass 
 class QuestionDetail:

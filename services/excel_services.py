@@ -43,10 +43,10 @@ class ExcelService:
     def _load_question_group(self, question_group_name : str):
         question_group = QuestionGroup(Name=question_group_name)
         
-        self._load_trueorfalse(question_group)
-        self._load_identification(question_group)
-        self._load_multiple_choice(question_group)
-        # self._load_multiple_answer(question_group)
+        # self._load_trueorfalse(question_group)
+        # self._load_identification(question_group)
+        # self._load_multiple_choice(question_group)
+        self._load_multiple_answer(question_group)
 
         self.data.QuestionGroups.append(question_group)
 
@@ -73,18 +73,21 @@ class ExcelService:
         )
 
         for name, grouped_data in grouped_questions.items():
-            points = grouped_data.iloc[0].Points
+            points, notes = grouped_data[0].Points, grouped_data[0].Notes
             
             correct_answer_rows = filter(lambda row: row.ChoiceType.lower() == self.CORRECT_VALUE.lower(), grouped_data)
             correct_answers = list(map(lambda row: row.Choice, correct_answer_rows))
 
             wrong_answers_rows = filter(lambda row: row.ChoiceType.lower() == self.WRONG_VALUE.lower(), grouped_data)
             wrong_answers = list(map(lambda row: row.Choice, wrong_answers_rows))
-
-            question = MultipleAnswerQuestion(Question=name, 
-                                              Points=points, 
-                                              CorrectAnswers=correct_answers,
-                                              WrongAnswers=wrong_answers)
+            
+            question = MultipleAnswerQuestion(
+                Question = name, 
+                Points = points, 
+                CorrectAnswers = correct_answers,
+                WrongAnswers = wrong_answers,
+                Notes = notes
+            )
             question_group.MultipleAnswerQuestions.append(question)
 
 
