@@ -106,7 +106,7 @@ class XLSXMenu:
               pause()
 
         except (ValueError, IndexError):
-          print("\nInvalid selection. Please choose a valid file number.")
+          print("\nInvalid selection. Please choose a valid file number and close all the open excel files.")
           pause()
         except FileNotFoundError:
           print("\nError: The specified file was not found. Please check the file path.")
@@ -162,7 +162,7 @@ class XLSXMenu:
             if isinstance(question, TrueOrFalseQuestion):
                 input_done = False
                 while not input_done:
-                  answer = input("(S to skip) Answer (T/F): ")
+                  answer = input("(S to skip) Answer (T/F): ").strip()
                   if(answer in ('T', 't', 'F', 'f')):
                     is_correct = answer.lower() == question.Answer.lower() 
                     input_done = True
@@ -197,8 +197,8 @@ class XLSXMenu:
                   action = input("(S to skip) Answer: ")
 
                   if action.lower() == 's':
-                     is_skipped = True
-                     input_done = True
+                    is_skipped = True
+                    input_done = True
                   else:
                       try:
                         answer_int = int(action)
@@ -285,7 +285,8 @@ class XLSXMenu:
               print(curr_notes)
             
             pause()
-
+        
+        # Compute score here if it is passing or not
         print("Total Score: ", current_score, "/", total_score)
         pause()
 

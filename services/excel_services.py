@@ -43,7 +43,7 @@ class ExcelService:
     def _load_question_group(self, question_group_name : str):
         question_group = QuestionGroup(Name=question_group_name)
         
-        # self._load_trueorfalse(question_group)
+        self._load_trueorfalse(question_group)
         # self._load_identification(question_group)
         self._load_multiple_choice(question_group)
         # self._load_multiple_answer(question_group)
@@ -154,7 +154,12 @@ class ExcelService:
         df = pd.read_excel(self.sheet_path, sheet_name)
 
         for _, row in df.iterrows():
-            question = TrueOrFalseQuestion(Question=row[self.QUESTION_COLUMN], Answer=row[self.ANSWER_COLUMN], Points=row[self.POINTS_COLUMN])
+            question = TrueOrFalseQuestion(
+                Question = row[self.QUESTION_COLUMN], 
+                Answer = row[self.ANSWER_COLUMN], 
+                Points = row[self.POINTS_COLUMN],
+                Notes = row[self.NOTE_COLUMN]
+            )
             question_group.TrueOrFalseQuestions.append(question)
 
 
