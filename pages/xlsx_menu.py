@@ -187,13 +187,16 @@ class XLSXMenu:
             if isinstance(question, MultipleChoiceQuestion):
                 input_done = False
                 while not input_done:
-                  choices = question.WrongAnswers + [question.CorrectAnswer]
+                  correct_keys_list = list(question.CorrectAnswerWNotes.keys())
+                  wrong_keys_list = list(question.WrongAnswersWNotes.keys())
+                  
+                  choices = correct_keys_list + wrong_keys_list
                   random.shuffle(choices)
                   for index, choice in enumerate(choices):
                     print(index + 1, ": ", choice)
                   action = input("(S to skip) Answer: ")
 
-                  if(action in ('S', 's')):
+                  if action.lower() == 's':
                      is_skipped = True
                      input_done = True
                   else:
@@ -204,13 +207,20 @@ class XLSXMenu:
                             continue
 
                         selected_choice = choices[answer_int - 1]
-                        is_correct = selected_choice == question.CorrectAnswer
-                        curr_notes = question.Notes[index]
+                        
+                        correct_key = correct_keys_list[0]
+                        is_correct = selected_choice == correct_key
+                        
+                        if is_correct:
+                          curr_notes = question.CorrectAnswerWNotes[selected_choice]
+                        else:
+                          curr_notes = question.WrongAnswersWNotes[selected_choice]
+                          
                         input_done = True
 
                       except:
                         print("Invalid Input")
-
+                      
             if isinstance(question, MultipleAnswerQuestion):
                 input_done = False
                 inputs = []

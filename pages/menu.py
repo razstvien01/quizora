@@ -11,7 +11,7 @@ def print_menu():
   print(" MAIN MENU ".center(75, "="))
   print("=" * 75)
   print("1. Import Excel Folder      - Import all Excel files from a folder") 
-  print("2. View Excel Folders       - View all available Excel folders") 
+  print("2. View Saved Excel Folders - View all available Excel folders") 
   print("3. Load XLSX Questions      - Select and load questions from Excel files") 
   print("4. Start Exam (XLSX)        - Begin the test with loaded questions")
   print("5. Exit                     - Close the application") 
