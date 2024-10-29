@@ -14,7 +14,7 @@ class ExcelService:
 
     CHOICE_COLUMN = "Choice"
     CHOICE_TYPE_COLUMN = "ChoiceType"
-    NOTE_COLUMN = "Note"
+    NOTE_COLUMN = "Notes"
 
     CORRECT_VALUE = "Correct"
     WRONG_VALUE = "Wrong"
@@ -43,10 +43,10 @@ class ExcelService:
     def _load_question_group(self, question_group_name : str):
         question_group = QuestionGroup(Name=question_group_name)
         
-        self._load_trueorfalse(question_group)
-        self._load_identification(question_group)
+        # self._load_trueorfalse(question_group)
+        # self._load_identification(question_group)
         self._load_multiple_choice(question_group)
-        self._load_multiple_answer(question_group)
+        # self._load_multiple_answer(question_group)
 
         self.data.QuestionGroups.append(question_group)
 
@@ -63,12 +63,18 @@ class ExcelService:
         
         grouped_questions = df.groupby(self.QUESTION_COLUMN).apply(lambda g: [
             MultipleChoiceGroupedDataRow(
-                Points=row[self.POINTS_COLUMN],
-                Choice=row[self.CHOICE_COLUMN],
-                ChoiceType=row[self.CHOICE_TYPE_COLUMN]) for _, row in g.iterrows()])
+                Points = row[self.POINTS_COLUMN],
+                Choice = row[self.CHOICE_COLUMN],
+                ChoiceType = row[self.CHOICE_TYPE_COLUMN],
+                Notes = row[self.NOTE_COLUMN]
+                ) 
+                for _, row in g.iterrows()
+            ],
+        )
 
         for name, grouped_data in grouped_questions.items():
-            points = grouped_data[0].Points
+            points = grouped_data.iloc[0].Points
+            
             correct_answer_rows = filter(lambda row: row.ChoiceType.lower() == self.CORRECT_VALUE.lower(), grouped_data)
             correct_answers = list(map(lambda row: row.Choice, correct_answer_rows))
 
@@ -95,20 +101,31 @@ class ExcelService:
         
         grouped_questions = df.groupby(self.QUESTION_COLUMN).apply(lambda g: [
             MultipleChoiceGroupedDataRow(
-                Points=row[self.POINTS_COLUMN],
-                Choice=row[self.CHOICE_COLUMN],
-                ChoiceType=row[self.CHOICE_TYPE_COLUMN])  for _, row in g.iterrows()])
+                Points = row[self.POINTS_COLUMN],
+                Choice = row[self.CHOICE_COLUMN],
+                ChoiceType = row[self.CHOICE_TYPE_COLUMN],
+                Notes = row[self.NOTE_COLUMN]
+                )  
+                for _, row in g.iterrows()
+            ]
+        )
 
         for name, grouped_data in grouped_questions.items():
             points = grouped_data[0].Points
-            correct_answer =  next((row.Choice for row in grouped_data if row.ChoiceType.lower() == self.CORRECT_VALUE.lower()), None)
-            wrong_answers_rows = filter(lambda row: row.ChoiceType.lower() == self.WRONG_VALUE.lower(), grouped_data)
-            wrong_answers = list(map(lambda row: row.Choice, wrong_answers_rows))
+            
+            # Find the correct answer with its note
+            correct_answer_row = next((row for row in grouped_data if row.ChoiceType.lower() == self.CORRECT_VALUE.lower()), None)
+            correct_answer_wnotes = {correct_answer_row.Choice: correct_answer_row.Notes} if correct_answer_row else {}
 
-            question = MultipleChoiceQuestion(Question=name, 
-                                              Points=points, 
-                                              CorrectAnswer=correct_answer,
-                                              WrongAnswers=wrong_answers)
+            # Find the wrong answers with their notes
+            wrong_answers_wnotes = {row.Choice: row.Notes for row in grouped_data if row.ChoiceType.lower() == self.WRONG_VALUE.lower()}
+            
+            question = MultipleChoiceQuestion(
+                Question=name, 
+                Points = points, 
+                CorrectAnswerWNotes = correct_answer_wnotes,
+                WrongAnswersWNotes = wrong_answers_wnotes
+            )
             question_group.MultipleChoiceQuestions.append(question)
 
 

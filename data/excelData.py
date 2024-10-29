@@ -6,4 +6,4 @@ class MultipleChoiceGroupedDataRow:
     Points: int
     Choice: str
     ChoiceType: str
-
+    Notes: str

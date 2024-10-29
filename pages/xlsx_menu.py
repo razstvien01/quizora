@@ -44,13 +44,13 @@ class XLSXMenu:
               if self.path_repo.save_exam_path(alias, path):
                 self.exam_paths[alias] = path
             else:
-              print("The alias you entered already exists.")
+              print("The path you entered already exists.")
             
             choice = input("Do you wish to add more exam paths? (Y/N): ")
             
             if choice in ("N", "n"):
               inputDone = True
-            else: 
+            elif choice not in ("Y", "y"): 
               print("Invalid input, please try again.")
         else:
           print("Invalid path. Please enter a valid path.")
@@ -145,7 +145,7 @@ class XLSXMenu:
         
         questions = deque(question_details.QuestionDetails)
         current_score = 0
-        while(len(questions) > 0):
+        while len(questions) > 0:
             question_detail = questions.popleft()
             clear_screen()
             print("Current Score: ", current_score, "/", total_score)
@@ -157,6 +157,7 @@ class XLSXMenu:
 
             is_correct = False
             is_skipped = False
+            curr_notes = None
 
             if isinstance(question, TrueOrFalseQuestion):
                 input_done = False
@@ -165,6 +166,7 @@ class XLSXMenu:
                   if(answer in ('T', 't', 'F', 'f')):
                     is_correct = answer.lower() == question.Answer.lower() 
                     input_done = True
+                    curr_notes = question.Notes
 
                   elif(answer in ('S', 's')):
                      is_skipped = True
@@ -178,6 +180,7 @@ class XLSXMenu:
                 answer = input("(N/A to skip) Answer: ")
                 if(answer.upper() != "N/A"):
                   is_correct = answer.lower().strip() == question.Answer.lower().strip() if not question.IsCaseSensitive else answer.strip() == question.Answer.strip()
+                  curr_notes = question.Notes
                 else:
                   is_skipped = True
 
@@ -202,6 +205,7 @@ class XLSXMenu:
 
                         selected_choice = choices[answer_int - 1]
                         is_correct = selected_choice == question.CorrectAnswer
+                        curr_notes = question.Notes[index]
                         input_done = True
 
                       except:
@@ -259,14 +263,16 @@ class XLSXMenu:
                   else:
                     print("Invalid Action")
 
-            if(is_skipped):
+            if is_skipped:
               questions.append(question_detail)
-
-            if(is_correct):
+            
+            elif is_correct:
               print("Correct!")
+              print(curr_notes)
               current_score = current_score + question.Points
             else:
               print("Wrong!")
+              print(curr_notes)
             
             pause()
 
@@ -282,7 +288,8 @@ class XLSXMenu:
               related_topic = topic.Name + " : " + question_group.Name
               if(related_topic not in exam_details.TopicsCovered):
                 exam_details.TopicsCovered.append(related_topic)
-
+            
+              
               for question in question_group.TrueOrFalseQuestions:
                 question_detail = QuestionDetail(Topic = topic.Name, QuestionGroup = question_group.Name, Question=question)
                 exam_details.QuestionDetails.append(question_detail)

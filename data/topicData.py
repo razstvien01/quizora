@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict
 
 
 @dataclass
@@ -7,6 +7,7 @@ class TrueOrFalseQuestion:
     Question: str
     Answer: bool
     Points: int
+    Notes: str
 
 @dataclass
 class IdentificationQuestion:
@@ -14,14 +15,15 @@ class IdentificationQuestion:
     Answer: str
     Points: int
     IsCaseSensitive: bool
+    Notes: str
 
 @dataclass
 class MultipleChoiceQuestion:
     Question: str
     Points: int
-    CorrectAnswer: str
-    WrongAnswers: List[str]
-
+    CorrectAnswerWNotes: Dict[str, str]  # Dictionary for correct answer and its note
+    WrongAnswersWNotes: Dict[str, str]
+    
 @dataclass
 class MultipleAnswerQuestion:
     Question: str
@@ -58,4 +60,3 @@ class Topic:
 class XLSXInfo:
   Alias: str
   Topics : List[Topic] = field(default_factory=list)
-
