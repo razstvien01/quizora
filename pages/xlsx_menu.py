@@ -177,6 +177,9 @@ class XLSXMenu:
                      continue
 
             if isinstance(question, IdentificationQuestion):
+                if question.IsCaseSensitive:
+                  print("Note: A case-sensitive answer")
+                  
                 answer = input("(N/A to skip) Answer: ")
                 if(answer.upper() != "N/A"):
                   is_correct = answer.lower().strip() == question.Answer.lower().strip() if not question.IsCaseSensitive else answer.strip() == question.Answer.strip()
