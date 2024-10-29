@@ -3,6 +3,7 @@ venv/
 
 #* CSV Files
 exam_files
+trainings
 
 #* DB Name
 system.db
