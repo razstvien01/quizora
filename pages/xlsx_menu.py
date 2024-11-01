@@ -239,7 +239,7 @@ class XLSXMenu:
                     input_done = True
                   elif(action in ('C', 'c')):
                     selected_answers = list(map(lambda index: choices[index], inputs))
-                    is_correct = all(correct_answer in selected_answers for correct_answer in question.CorrectAnswers)
+                    is_correct = all(correct_answer in selected_answers for correct_answer in question.CorrectAnswers) and all(wrong_answer not in selected_answers for wrong_answer in question.WrongAnswers)
                     curr_notes = question.Notes
                     input_done = True
 
