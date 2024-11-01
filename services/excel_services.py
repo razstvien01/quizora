@@ -43,9 +43,9 @@ class ExcelService:
     def _load_question_group(self, question_group_name : str):
         question_group = QuestionGroup(Name=question_group_name)
         
-        # self._load_trueorfalse(question_group)
-        # self._load_identification(question_group)
-        # self._load_multiple_choice(question_group)
+        self._load_trueorfalse(question_group)
+        self._load_identification(question_group)
+        self._load_multiple_choice(question_group)
         self._load_multiple_answer(question_group)
 
         self.data.QuestionGroups.append(question_group)
