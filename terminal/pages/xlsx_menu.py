@@ -29,11 +29,16 @@ class XLSXMenu:
     def load_exam_paths(self):
       inputDone = False
       while not inputDone:
-        path = input("Please input the exam folder path: ")
+        path = input("Please input the exam folder directory (or type 'back' to go back): ")
+        
+        if path.lower() == 'back':
+          print("Going back to the previous menu...")
+          inputDone = True
+          return None
 
         if os.path.exists(path):
           if not os.path.isdir(path):
-            choice = input("Specified path is not a folder do you want to continue? (Y/N): ")
+            choice = input("Specified directory is not a folder. Do you want to continue? (Y/N): ")
 
             if choice in ("N", "n"):
                  inputDone = True
