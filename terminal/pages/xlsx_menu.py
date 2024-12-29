@@ -13,19 +13,113 @@ class XLSXMenu:
         self.exam_paths = self.path_repo.get_exam_paths()
         self.xlsx_infos : List[XLSXInfo] = []
         self.exam_details : ExamDetails = None
-        
+    
     def view_exam_paths(self):
       self.exam_paths = self.path_repo.get_exam_paths()
       
-      if self.exam_paths:
-        print("Excel Folders:")
-        for i, (alias, path) in enumerate(self.exam_paths.items()):
-          print(f"{i + 1}. {alias} -> {path}")
-      else:
-        print("There are no saved excel folder paths")
+      if not self.exam_paths:
+        print("There are no saved Excel folder paths.\n")
+        pause()
+        return
+      
+      print("Excel Folders:")
+      for i, (alias, path) in enumerate(self.exam_paths.items()):
+        print(f"{i + 1}. {alias} -> {path}")
+      
+      action = input("\nDo you want to edit or delete any path? (edit/delete/none): ").strip().lower()
+      
+      match action:
+        case "none":
+          print("No changes made.\n")
+          pause()
+        case "edit":
+          self.handle_edit_path()
+        case "delete":
+          self.handle_delete_path()
+        case _:
+          print("Invalid choice. No changes made.\n")
+          pause()
+      
+    def get_path_by_index(self, index):
+      if 0 <= index < len(self.exam_paths):
+        return list(self.exam_paths.items())[index]
+      return None, None
+    
+    def handle_edit_path(self):
+      try:
+        index = int(input("Enter the number of the path to edit: ")) - 1
+        alias, old_path = self.get_path_by_index(index)
+        
+        if alias is None:
+          print("Invalid choice. No path exists at this index.")
+          return
+        
+        print(f"\nYou are editing:  {alias} -> {old_path}")
+        
+        new_path = self.get_new_path()
+        if new_path is None:
+          print("Invalid path. Please ensure the directory exists.\n")
+          pause()
+          return
+        
+        if not self.confirm_update(alias, old_path, new_path):
+          print("Update canceled.")
+          return
+        
+        if self.path_repo.update_exam_path(alias, new_path):
+            print("Path updated successfully.")
+            self.exam_paths[alias] = new_path
+        else:
+          print("Failed to update the path.")
+            
+      except ValueError:
+        print("Invalid input. Please enter a valid number.")
+        
       print()
       pause()
-
+      
+    def handle_delete_path(self):
+      try:
+        index = int(input("Enter the number of the path to delete: ")) - 1
+        alias, old_path = self.get_path_by_index(index)
+        
+        if alias is None:
+          print("Invalid choice. No path exists at this index.")
+          return
+        
+        print(f"\nYou are delete: {alias} -> {old_path}")
+        
+        if not self.confirm_delete(alias, old_path):
+          print("Deletion canceled.")
+          return
+        
+        
+        if self.path_repo.delete_exam_path(alias):
+          print("Path deleted successfully.")
+          del self.exam_paths[alias]
+        else:
+          print("Failed to delete the path.")
+          
+      except ValueError:
+        print("Invalid input. Please enter a valid number.")
+        
+      print()
+      pause()
+      
+    def confirm_delete(self, alias, old_path):
+      confirm = input(f"\nAre you sure you want to delete the path for {alias} -> {old_path}? (Y/N): ").strip().lower()
+      return confirm == 'y'
+    
+    def get_new_path(self):
+      new_path = input("Enter the new path: ").strip()
+      if os.path.exists(new_path) and os.path.isdir(new_path):
+        return new_path
+      return None
+    
+    def confirm_update(self, alias, old_path, new_path):
+      confirm = input(f"\nAre you sure you want to update the path for {alias} from {old_path} to {new_path}? (Y/N): ").strip().lower()
+      return confirm == 'y'
+      
     def load_exam_paths(self):
       inputDone = False
       while not inputDone:
@@ -331,3 +425,4 @@ class XLSXMenu:
                 exam_details.QuestionDetails.append(question_detail)
 
         return exam_details
+      

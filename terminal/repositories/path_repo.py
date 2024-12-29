@@ -5,6 +5,41 @@ from repositories.main_repo import MainRepo
 class PathRepo(MainRepo):
   def __init__(self):
     super().__init__()
+  
+  def delete_exam_path(self, alias: str) -> bool:
+    try:
+      with sqlite3.connect(self.DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM exam_paths WHERE alias = ?", (alias,))
+        conn.commit()
+        
+        if cursor.rowcount > 0:
+          return True
+        else:
+          print(f"No path found for alias {alias}.")
+          return False
+        
+    except sqlite3.Error as e:
+      print(f"Database error: {e}")
+      return False
+    
+  def update_exam_path(self, alias: str, new_path: str) -> bool:
+    try:
+      with sqlite3.connect(self.DB_PATH) as conn:
+        cursor = conn.cursor()
+        
+        cursor.execute("UPDATE exam_paths SET path = ? WHERE alias = ?", (new_path, alias))
+        conn.commit()
+        
+        if cursor.rowcount > 0:
+          return True
+        else:
+          print(f"No path found for alias {alias}")
+          return False
+        
+    except sqlite3.Error as e:
+      print(f"Database error: {e}")
+      return False
     
   def save_exam_path(self, alias: str, path: str) -> bool:
     try:
