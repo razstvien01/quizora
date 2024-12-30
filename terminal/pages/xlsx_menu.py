@@ -137,13 +137,14 @@ class XLSXMenu:
             choice = input("Specified directory is not a folder. Do you want to continue? (Y/N): ")
 
             if choice in ("N", "n"):
-                 inputDone = True
+              inputDone = True
           else: 
             alias = os.path.basename(path)
 
             if alias not in self.exam_paths:
               if self.path_repo.save_exam_path(alias, path):
                 self.exam_paths[alias] = path
+                print("New path added successfully.\n")
             else:
               print("The path you entered already exists.")
             
@@ -194,7 +195,15 @@ class XLSXMenu:
           load_choice = input("\nDo you want to load all files in this path? (Y/N): ").lower()
 
           if load_choice == "y":
-            xlsx_files = [filename for filename in os.listdir(selected_path) if filename.endswith('.xlsx')]
+            xlsx_files = [filename for filename in os.listdir(selected_path) if filename.endswith('.xlsx') and filename.startswith('~$') == False]
+            
+            # Enter the number of folder to load the exam from: 2
+
+            # XLSX Files:
+            # 1. test.xlsx
+            # 2. ~$test.xlsx
+
+            # Do you want to load all files in this path? (Y/N): y
             if not xlsx_files:
               print("\nNo XLSX files found in the selected path.")
               pause()
