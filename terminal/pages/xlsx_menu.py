@@ -197,13 +197,6 @@ class XLSXMenu:
           if load_choice == "y":
             xlsx_files = [filename for filename in os.listdir(selected_path) if filename.endswith('.xlsx') and filename.startswith('~$') == False]
             
-            # Enter the number of folder to load the exam from: 2
-
-            # XLSX Files:
-            # 1. test.xlsx
-            # 2. ~$test.xlsx
-
-            # Do you want to load all files in this path? (Y/N): y
             if not xlsx_files:
               print("\nNo XLSX files found in the selected path.")
               pause()
