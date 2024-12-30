@@ -172,9 +172,21 @@ class XLSXMenu:
           file_choice_int = int(file_choice)
           selected_path = list(self.exam_paths.values())[file_choice_int - 1]
           selected_alias = list(self.exam_paths.values())[file_choice_int - 1]
-          load_choice = input("Do you want to load all files in this path? (Y/N): ")
+          
+          
+          xlsx_files = [filename for filename in os.listdir(selected_path) if filename.endswith('.xlsx')]
+          if not xlsx_files:
+            print("\nNo XLSX files found in the selected path.")
+            pause()
+            return
+            
+          print("\nXLSX Files:")
+          for i, filename in enumerate(xlsx_files):
+            print(f"{i + 1}. {filename}")
+          
+          load_choice = input("\nDo you want to load all files in this path? (Y/N): ").lower()
 
-          if load_choice in ("Y", "y"):
+          if load_choice == "y":
             xlsx_files = [filename for filename in os.listdir(selected_path) if filename.endswith('.xlsx')]
             if not xlsx_files:
               print("\nNo XLSX files found in the selected path.")
@@ -191,20 +203,26 @@ class XLSXMenu:
               self.xlsx_infos.append(xlsx_info)
               print("\nAll exam files have been successfully imported.")
               pause()
+          elif load_choice == "n":
+            file_index = int(input("Enter te number of the specific XLSX file to load: "))
+            try:
+              filename = xlsx_files[file_index - 1]
+              file_path = os.path.join(selected_path, filename)
+              
+              if os.path.isfile(file_path):
+                xlsx_info = XLSXInfo(Alias=filename)
+                excel_service = ExcelService(file_path)
+                topic = excel_service.load()
+                xlsx_info.Topics.append(topic)
+                self.xlsx_infos.append(xlsx_info)
+                print("\nExam file has been successfully imported.")
+                pause()
+            except (ValueError, IndexError):
+              print("\nInvalid selection. Please choose a valid file number.")
+              pause()
           else:
-            filename = input("Enter the specific XLSX filename to load: ")
-            file_path = os.path.join(selected_path, filename)
-            if os.path.isfile(file_path):
-              xlsx_info = XLSXInfo(Alias=filename)
-              excel_service = ExcelService(file_path)
-              topic = excel_service.load()
-              xlsx_info.Topics.append(topic)
-              self.xlsx_infos.append(xlsx_info)
-              print("\nThe exam file has been successfully imported.")
-              pause()
-            else:
-              print("\nError: The specified file was not found. Please check the file name.")
-              pause()
+            print("\nInvalid input. Please try again.")
+            pause()
 
         except (ValueError, IndexError):
           print("\nInvalid selection. Please choose a valid file number and close all the open excel files.")
