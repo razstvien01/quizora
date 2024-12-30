@@ -166,8 +166,15 @@ class XLSXMenu:
         print("\nSelect a folder to load for the exam:")
         for i, (alias, path) in enumerate(self.exam_paths.items()):
           print(f"{i + 1}. {alias} -> {path}")
+        print("0. Go back")
         
         file_choice = input("\nEnter the number of folder to load the exam from: ")
+        
+        if file_choice == "0":
+          print("\nOperation cancelled.")
+          pause()
+          return
+        
         try:
           file_choice_int = int(file_choice)
           selected_path = list(self.exam_paths.values())[file_choice_int - 1]
