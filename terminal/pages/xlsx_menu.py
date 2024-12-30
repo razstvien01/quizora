@@ -190,6 +190,8 @@ class XLSXMenu:
             
           print("\nXLSX Files:")
           for i, filename in enumerate(xlsx_files):
+            if filename.startswith('~$'):
+              continue
             print(f"{i + 1}. {filename}")
           
           load_choice = input("\nDo you want to load all files in this path? (Y/N): ").lower()
