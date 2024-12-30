@@ -84,13 +84,15 @@ class XLSXMenu:
         alias, old_path = self.get_path_by_index(index)
         
         if alias is None:
-          print("Invalid choice. No path exists at this index.")
+          print("\nInvalid choice. No path exists at this index.")
+          pause()
           return
         
-        print(f"\nYou are delete: {alias} -> {old_path}")
+        print(f"\nYou are to delete: {alias} -> {old_path}")
         
         if not self.confirm_delete(alias, old_path):
-          print("Deletion canceled.")
+          print("\nDeletion canceled.")
+          pause()
           return
         
         
