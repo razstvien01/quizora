@@ -3,7 +3,8 @@ import random
 from typing import List
 from collections import deque
 from data.topicData import ExamDetails, IdentificationQuestion, MultipleAnswerQuestion, MultipleChoiceQuestion, TrueOrFalseQuestion,XLSXInfo, QuestionDetail
-from helper.utils import clear_screen, pause
+from helper.utils import clear_screen, pause, get_new_path
+from ui.confirm import confirm_update, confirm_delete
 from services.excel_services import ExcelService
 from repositories.path_repo import PathRepo
 
@@ -56,13 +57,13 @@ class XLSXMenu:
         
         print(f"\nYou are editing:  {alias} -> {old_path}")
         
-        new_path = self.get_new_path()
+        new_path = get_new_path()
         if new_path is None:
           print("Invalid path. Please ensure the directory exists.\n")
           pause()
           return
         
-        if not self.confirm_update(alias, old_path, new_path):
+        if not confirm_update(alias, old_path, new_path):
           print("Update canceled.")
           return
         
@@ -90,7 +91,7 @@ class XLSXMenu:
         
         print(f"\nYou are to delete: {alias} -> {old_path}")
         
-        if not self.confirm_delete(alias, old_path):
+        if not confirm_delete(alias, old_path):
           print("\nDeletion canceled.")
           pause()
           return
@@ -107,21 +108,7 @@ class XLSXMenu:
         
       print()
       pause()
-      
-    def confirm_delete(self, alias, old_path):
-      confirm = input(f"\nAre you sure you want to delete the path for {alias} -> {old_path}? (Y/N): ").strip().lower()
-      return confirm == 'y'
     
-    def get_new_path(self):
-      new_path = input("Enter the new path: ").strip()
-      if os.path.exists(new_path) and os.path.isdir(new_path):
-        return new_path
-      return None
-    
-    def confirm_update(self, alias, old_path, new_path):
-      confirm = input(f"\nAre you sure you want to update the path for {alias} from {old_path} to {new_path}? (Y/N): ").strip().lower()
-      return confirm == 'y'
-      
     def load_exam_paths(self):
       inputDone = False
       while not inputDone:
@@ -236,7 +223,7 @@ class XLSXMenu:
             pause()
 
         except (ValueError, IndexError):
-          print("\nInvalid selection. Please choose a valid file number and close all the open excel files.")
+          print("\nInvalid selection. Please choose a valid file number.")
           pause()
         except FileNotFoundError:
           print("\nError: The specified file was not found. Please check the file path.")
@@ -278,7 +265,7 @@ class XLSXMenu:
         while len(questions) > 0:
             question_detail = questions.popleft()
             clear_screen()
-            print("Current Score: ", current_score, "/", total_score)
+            print("Current Score: ", int(current_score), "/", int(total_score))
             print("Remaining Questions: ", len(questions))
             print("Topic Belonged: ", question_detail.Topic, ".", question_detail.QuestionGroup)
             print("Question: ")
@@ -420,8 +407,8 @@ class XLSXMenu:
             
             pause()
         
-        # Compute score here if it is passing or not
-        print("Total Score: ", current_score, "/", total_score)
+        clear_screen()
+        print("Exam completed!!!\nTotal Score: ", current_score, "/", total_score)
         pause()
 
     def _get_question_infos(self) -> ExamDetails:
