@@ -36,7 +36,7 @@ class ExcelService:
         # Check question groups
         for question_group in self._get_question_groups():
             self._load_question_group(question_group)
-
+        
         return self.data
 
 

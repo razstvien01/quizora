@@ -196,6 +196,16 @@ class XLSXMenu:
 
                 excel_service = ExcelService(file_path)
                 topic = excel_service.load()
+                
+                 # Check if there are no loaded questions
+                if not topic.QuestionGroups or all(
+                    not (qg.TrueOrFalseQuestions or qg.IdentificationQuestions or qg.MultipleChoiceQuestions or qg.MultipleAnswerQuestions)
+                    for qg in topic.QuestionGroups
+                ):
+                    print("\nNo questions were loaded. Please add questions to the file.")
+                    pause()
+                    return
+                
                 xlsx_info.Topics.append(topic)
               
               self.xlsx_infos.append(xlsx_info)
