@@ -1,10 +1,14 @@
+altgraph==0.17.4
 antiorm==1.2.1
 db==0.1.1
 db-sqlite3==0.0.1
 et_xmlfile==2.0.0
 numpy==2.2.1
 openpyxl==3.1.5
+packaging==24.2
 pandas==2.2.3
+pyinstaller==6.11.1
+pyinstaller-hooks-contrib==2024.11
 python-dateutil==2.9.0.post0
 pytz==2024.2
 six==1.16.0
