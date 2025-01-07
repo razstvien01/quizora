@@ -8,11 +8,8 @@ trainings
 #* DB Name
 system.db
 
-#* Cache
-services/__pycache__/csv_services.cpython-310.pyc
-ui/__pycache__
-pages/__pycache__
-helper/__pycache__
-services/__pycache__/
-data/__pycache__/
-repositories/__pycache__/
+# Ignore all __pycache__ directories
+**/__pycache__/
+
+# Discluded files that has this character in the name
+**/~$*
