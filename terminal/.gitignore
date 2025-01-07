@@ -1,6 +1,10 @@
 .venv/
 venv/
 
+# Build files or folders
+build/
+main.spec
+
 #* CSV Files
 exam_files
 trainings
