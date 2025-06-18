@@ -29,3 +29,41 @@ def get_token_auth_header(request):
     raise AuthenticationFailed("Authorization header must be Bearer token.")
   
   return parts[1]
+
+def decode_jwt(token):
+  """
+  * Validate and decodes the JWT token using Auth0's public key.
+  * - Fetches Auth0's JWKS (JSON Web Key Set)
+  * - Matches the key ID (kid) in the token header
+  * - Verifie the token's signature using the matched key
+  * - Returns the payload if valid
+  """
+  jsonurl = requests.get(f"https://{AUTH0_DOMAIN}/.well-known/jwks.json")
+  jwks = jsonurl.json()
+  unverified_header = jwt.get_unverified_header(token)
+  
+  rsa_key = []
+  for key in jwks["keys"]:
+    if key["kid"] == unverified_header["kid"]:
+      rsa_key = {
+        "kty": key["kty"],
+        "kid": key["kid"],
+        "use": key["use"],
+        "n": key["n"],
+        "e": key["e"]
+      }
+      
+  if rsa_key:
+    try:
+      payload = jwt.decode(
+        token,
+        rsa_key,
+        algorithms=ALGORITHMS,
+        audience=API_IDENTIFIER,
+        issuer=f"https://{AUTH0_DOMAIN}/"
+      )
+      return payload
+    except Exception as e:
+      raise AuthenticationFailed(f"Token decade error: {str(e)}")
+  
+  raise AuthenticationFailed("Unable to find appropraite key.")
