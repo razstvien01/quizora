@@ -186,5 +186,3 @@ Thanks to:
 
 💌 **[team@quizora.io](mailto:razstviendev@gmail.com)**
 🌐 [https://quizora.io](https://quizora.io)
-
-```
