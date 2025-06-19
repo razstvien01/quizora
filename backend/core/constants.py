@@ -1,0 +1,1 @@
+ALLOWED_ROLES = ['student', 'admin']
