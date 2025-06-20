@@ -10,6 +10,9 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 CORS_ALLOW_ALL_ORIGINS = True
 
+AUTH0_DOMAIN = config('AUTH0_DOMAIN')
+AUTH0_API_IDENTIFIER = config('AUTH0_API_IDENTIFIER')
+
 INSTALLED_APPS = [
     'core',
     'rest_framework',
