@@ -13,14 +13,23 @@ class RegisterUser(APIView):
     payload = decode_jwt(token)
     
     role = payload.get('role', 'student')
+    name = payload.get('name', '')
+    email = payload.get('email')
+    
+    if not email:
+      return Response(
+        {"error": "Email not found in token payload"},
+        status=400
+      )
+    
     if role not in ALLOWED_ROLES:
       role = 'student'
     
     user, created = Auth0User.objects.get_or_create(
       auth0_id = payload['sub'],
       defaults={
-        'email': payload['email'],
-        'name': payload.get('name', ''),
+        'email': email,
+        'name': name,
         'role': role
       }
     )
