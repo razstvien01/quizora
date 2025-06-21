@@ -1,3 +1,4 @@
+import MainLayout from "@/layouts/MainLayout";
 import { Helmet } from "react-helmet-async";
 
 function Home() {
@@ -5,13 +6,14 @@ function Home() {
     <>
       <Helmet>
         <title>Home | Quizora</title>
-        <meta name="description" content="Welcome to the Quizora home page."/>
+        <meta name="description" content="Welcome to the Quizora home page." />
       </Helmet>
-      <h1>
-        Welcome to Quizora!
-      </h1>
+      <MainLayout>
+        <h1 className="text-3xl font-bold">Welcome to Quizora</h1>
+        <p className="mt-4">This is the home page.</p>
+      </MainLayout>
     </>
-  )
+  );
 }
 
 export default Home;
