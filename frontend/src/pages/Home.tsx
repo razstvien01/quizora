@@ -2,11 +2,25 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { benefits } from "@/constants/benefits";
 import { features } from "@/constants/features";
 import { stats } from "@/constants/stats";
-import { ArrowRight, CheckCircle, Download, Globe, Play, Star, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle,
+  Download,
+  Globe,
+  Play,
+  Star,
+  Zap,
+} from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 function Home() {
@@ -62,7 +76,7 @@ function Home() {
           <section className="container py-8 md:py-12 lg:py-24">
             <Card className="border-0 bg-muted/50">
               <CardContent className="p-6 md:p-10">
-                <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
+                <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
                   {stats.map((stat, index) => (
                     <div key={index} className="text-center">
                       <div className="text-2xl font-bold text-primary md:text-4xl">
