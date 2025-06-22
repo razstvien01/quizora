@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Explore from "./pages/Explore";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./components/theme-provider";
+import Auth from "./pages/Auth";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/auth" element={<Auth />} />
       </Routes>
     </ThemeProvider>
   );
