@@ -4,9 +4,11 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useNavigate } from "react-router-dom";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -45,7 +47,7 @@ export default function SiteHeader() {
               Community
             </button>
           </div>
-          <Button>Get Started</Button>
+          <Button onClick={() => navigate("/auth")}>Get Started</Button>
         </nav>
 
         {/* Mobile Navigation */}
@@ -76,7 +78,12 @@ export default function SiteHeader() {
               >
                 Community
               </button>
-              <Button className="w-full">Get Started</Button>
+              <Button
+                onClick={() => navigate("/auth")}
+                className="w-full bg-amber-200"
+              >
+                Get Started
+              </Button>
             </nav>
           </SheetContent>
         </Sheet>
