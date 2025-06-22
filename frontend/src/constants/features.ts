@@ -3,9 +3,7 @@ import {
   Target,
   Users,
   Trophy,
-  Smartphone,
   BarChart3,
-  Shield,
   BookOpen,
 } from "lucide-react";
 
@@ -46,24 +44,10 @@ export const features = [
     color: "text-yellow-500",
   },
   {
-    icon: Smartphone,
-    title: "Mobile-First Design",
-    description:
-      "Voice-to-text search, offline access, and seamless sync across all your devices.",
-    color: "text-pink-500",
-  },
-  {
     icon: BarChart3,
     title: "Advanced Analytics",
     description:
       "Comprehensive performance reports with PDF/CSV exports and detailed usage analytics.",
     color: "text-indigo-500",
-  },
-  {
-    icon: Shield,
-    title: "Enterprise Security",
-    description:
-      "Full encryption, API rate limiting, and secure payment processing for premium content.",
-    color: "text-red-500",
   },
 ];
