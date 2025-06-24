@@ -27,6 +27,7 @@ import {
   Chrome,
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
@@ -45,6 +46,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const { loginWithRedirect } = useAuth0();
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -86,12 +88,15 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsLoading(false);
 
-    // Handle successful registration here
-    console.log("Registration successful:", formData);
+    try {
+      await loginWithRedirect({ screen_hint: "signup" } as never);
+      // Handle successful registration here
+      console.log("Registration successful:", formData);
+    } catch (error) {
+      console.error("Login failed:", error);
+      setIsLoading(false);
+    }
   };
 
   const handleSocialLogin = (provider: string) => {
