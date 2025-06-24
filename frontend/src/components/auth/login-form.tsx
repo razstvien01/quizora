@@ -26,6 +26,7 @@ import {
   Chrome,
   ArrowRight,
 } from "lucide-react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;
@@ -40,6 +41,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const { loginWithRedirect } = useAuth0();
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -70,12 +72,15 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsLoading(false);
 
-    // Handle successful login here
-    console.log("Login successful:", formData);
+    try {
+      await loginWithRedirect();
+      // Handle successful login here
+      console.log("Login successful:", formData);
+    } catch (error) {
+      console.error("Login failed:", error);
+      setIsLoading(false);
+    }
   };
 
   const handleSocialLogin = (provider: string) => {
