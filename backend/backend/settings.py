@@ -12,6 +12,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH0_DOMAIN = config('AUTH0_DOMAIN')
 AUTH0_API_IDENTIFIER = config('AUTH0_API_IDENTIFIER')
+STATIC_ROOT = '/app/staticfiles'
 
 INSTALLED_APPS = [
     'core',
@@ -63,7 +64,7 @@ DATABASES = {
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
+        'PORT': config('DB_PORT', cast=int)
     }
 }
 
