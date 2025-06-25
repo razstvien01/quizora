@@ -12,6 +12,7 @@ import {
 import { benefits } from "@/constants/benefits";
 import { features } from "@/constants/features";
 import { stats } from "@/constants/stats";
+import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import {
   ArrowRight,
   CheckCircle,
@@ -24,6 +25,8 @@ import {
 import { Helmet } from "react-helmet-async";
 
 function Home() {
+  useAuthRedirect();
+
   return (
     <>
       <Helmet>
