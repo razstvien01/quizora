@@ -4,4 +4,5 @@ export const API_BASE_URL =
 export const API_ENDPOINTS = {
   REGISTER_USER: `${API_BASE_URL}/register/`,
   LOGIN_USER: `${API_BASE_URL}/login/`,
+  AUTH: `${API_BASE_URL}/auth/`
 };
