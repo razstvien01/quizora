@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: quizora_db
+    restart: always
+    environment:
+      POSTGRES_DB: quizora_db
+      POSTGRES_USER: quizora_user
+      POSTGRES_PASSWORD: quizora_user
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+      - static_volume:/app/staticfiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    working_dir: /app
+    command: npm run dev -- --host
+
+volumes:
+  pgdata:
+  static_volume:
