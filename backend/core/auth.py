@@ -1,4 +1,3 @@
-import json
 import requests
 from jose import jwt
 from django.conf import settings
@@ -8,6 +7,16 @@ from rest_framework.exceptions import AuthenticationFailed
 AUTH0_DOMAIN = settings.AUTH0_DOMAIN
 API_IDENTIFIER = settings.AUTH0_API_IDENTIFIER
 ALGORITHMS = ["RS256"]
+
+def fetch_user_info(token):
+  response = requests.get(
+        f"https://{AUTH0_DOMAIN}/userinfo",
+        headers={"Authorization": f"Bearer {token}"}
+  )
+  
+  if response.status_code != 200:
+    raise AuthenticationFailed("Failed to fetch useer info from Auth0")
+  return response.json()
 
 def get_token_auth_header(request):
   """
@@ -64,6 +73,7 @@ def decode_jwt(token):
       )
       return payload
     except Exception as e:
+      print("JWT Decode Error:", str(e))
       raise AuthenticationFailed(f"Token decade error: {str(e)}")
   
   raise AuthenticationFailed("Unable to find appropraite key.")
