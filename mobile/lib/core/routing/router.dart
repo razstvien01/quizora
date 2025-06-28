@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/core/presentation/screens/splash_screen.dart';
 
 import 'package:mobile/features/dashbaord/presentation/screens/dashboard_screen.dart';
 import 'package:mobile/features/auth/presentation/screens/login_screen.dart';
-import 'package:mobile/features/auth/presentation/screens/splash_screen.dart';
 
 final authProvider = StateProvider<bool>((ref) => false);
 
