@@ -2,24 +2,23 @@ import 'package:dio/dio.dart';
 import 'package:mobile/core/utils/env.dart';
 
 class DioClient {
-  final Dio dio;
+  static final Dio dio = Dio(
+    BaseOptions(
+      baseUrl: Env.apiUrl,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    ),
+  );
 
-  DioClient({String? token})
-    : dio = Dio(
-        BaseOptions(
-          baseUrl: Env.apiUrl,
-          headers: token != null ? {'Authorization': 'Bearer $token'} : {},
-        ),
-      ) {
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          return handler.next(options);
-        },
-        onError: (e, handler) {
-          return handler.next(e);
-        },
-      ),
-    );
+  static void setAuthToken(String token) {
+    dio.options.headers['Authorization'] = 'Bearer $token';
+  }
+
+  static void clearAuthToken() {
+    dio.options.headers.remove('Authorization');
   }
 }
