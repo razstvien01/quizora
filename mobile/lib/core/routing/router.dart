@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/core/presentation/screens/splash_screen.dart';
 
 import 'package:mobile/features/dashbaord/presentation/screens/dashboard_screen.dart';
-import 'package:mobile/features/auth/presentation/screens/login_screen.dart';
 
 import 'package:mobile/core/constants/app_routes.dart';
 import 'package:mobile/features/landing/presentation/screens/landing_screen.dart';
@@ -20,10 +19,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => const SplashScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.login,
-        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: AppRoutes.dashboard,
