@@ -16,7 +16,7 @@ val auth0Domain = localProps.getProperty("AUTH0_DOMAIN") ?: ""
 val auth0Scheme = localProps.getProperty("AUTH0_SCHEME") ?: ""
 
 android {
-    namespace = "com.example.mobile"
+    namespace = "com.example.quizora"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -30,7 +30,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.mobile"
+        applicationId = "com.example.quizora"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

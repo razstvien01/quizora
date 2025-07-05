@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/core/utils/env.dart';
+import 'package:mobile/core/config/env.dart';
 
 class DioClient {
   static final Dio dio = Dio(

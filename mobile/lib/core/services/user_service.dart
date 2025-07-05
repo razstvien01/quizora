@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/core/network/dio_client.dart';
+import 'dio_client.dart';
 
-class UserApi {
+class UserService {
   Future<Map<String, dynamic>> getCurrentUser() async {
     try {
       final res = await DioClient.dio.get('/uers/me/');

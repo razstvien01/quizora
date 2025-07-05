@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/core/constants/app_routes.dart';
-import 'package:mobile/core/network/services/auth_service.dart';
-import 'package:mobile/core/utilities/extensions/context_extensions.dart';
-import 'package:mobile/features/landing/presentation/widgets/features_page.dart';
-import 'package:mobile/features/landing/presentation/widgets/hero_page.dart';
-import 'package:mobile/features/landing/presentation/widgets/kickstart_page.dart';
+import 'package:mobile/core/utils/extensions/context_extensions.dart';
+import 'package:mobile/domain/providers/auth_provider.dart';
+import 'package:mobile/presentation/widgets/landing/features_page.dart';
+import 'package:mobile/presentation/widgets/landing/hero_page.dart';
+import 'package:mobile/presentation/widgets/landing/kickstart_page.dart';
 
-class LandingScreen extends StatefulWidget {
+class LandingScreen extends ConsumerStatefulWidget {
   const LandingScreen({super.key});
 
   @override
-  State<LandingScreen> createState() => _LandingScreenState();
+  ConsumerState<LandingScreen> createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> {
+class _LandingScreenState extends ConsumerState<LandingScreen> {
   final PageController _controller = PageController();
-  final AuthService _authService = AuthService();
   int _currentIndex = 0;
   bool _isLoading = false;
 
@@ -26,12 +26,10 @@ class _LandingScreenState extends State<LandingScreen> {
     });
 
     try {
-      final user = await _authService.login();
+      await ref.read(authProvider.notifier).login();
 
       if (!mounted) return;
       context.go(AppRoutes.dashboard);
-
-      debugPrint('Logged in user: $user');
     } catch (e) {
       debugPrint('Login error: $e');
 

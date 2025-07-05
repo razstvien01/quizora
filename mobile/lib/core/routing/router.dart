@@ -1,16 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/core/presentation/screens/splash_screen.dart';
-
-import 'package:mobile/features/dashbaord/presentation/screens/dashboard_screen.dart';
-
 import 'package:mobile/core/constants/app_routes.dart';
-import 'package:mobile/features/landing/presentation/screens/landing_screen.dart';
-
-final authProvider = StateProvider<bool>((ref) => false);
+import 'package:mobile/domain/providers/auth_provider.dart';
+import 'package:mobile/presentation/screens/dashboard_screen.dart';
+import 'package:mobile/presentation/screens/landing_screen.dart';
+import 'package:mobile/presentation/screens/splash_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final isLoggedIn = ref.watch(authProvider);
+  final authState = ref.watch(authProvider);
+  final isLoggedIn = authState.isLoggedIn;
 
   return GoRouter(
     initialLocation: '/',

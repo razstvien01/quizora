@@ -1,22 +1,31 @@
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:dio/dio.dart';
-import 'package:mobile/core/utils/env.dart';
-import '../../auth/token_storage.dart';
+import 'package:mobile/core/config/env.dart';
+import 'package:mobile/core/utils/token_storage.dart';
 
 class AuthService {
   final auth0 = Auth0(Env.auth0Domain, Env.auth0ClientId);
 
   Future<Map<String, dynamic>> login() async {
+    print("Redirect URL: ${Env.auth0RedirectUri}");
+
+    // final credentials = await auth0.webAuthentication().login(
+    //   redirectUrl: Env.auth0RedirectUri,
+    // );
+
     final credentials = await auth0.webAuthentication().login(
-      redirectUrl: Env.auth0RedirectUri,
+      redirectUrl: 'com.example.quizora://login-callback',
+      useEphemeralSession: true,
     );
+
+    print("Login returned: $credentials");
 
     final accessToken = credentials.accessToken;
 
     final dio = Dio();
     final response = await dio.post(
       '${Env.apiUrl}/auth/',
-      options: Options( 
+      options: Options(
         headers: {
           'Authorization': 'Bearer $accessToken',
           'Content-Type': 'application/json',
