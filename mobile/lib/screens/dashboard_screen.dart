@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:quizora/constants/app_routes.dart';
 import 'package:quizora/extensions/context_extensions.dart';
 import 'package:quizora/providers/auth_provider.dart';
 
