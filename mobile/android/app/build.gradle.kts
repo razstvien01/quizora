@@ -1,3 +1,10 @@
+import java.util.Properties
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { localProperties.load(it) }
+}
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -28,8 +35,11 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         
-        manifestPlaceholders.put("auth0Domain", "dev-kv8mlol0f8opsj2z.jp.auth0.com")
-        manifestPlaceholders.put("auth0Scheme", "quizora")
+        val auth0Domain = localProperties["auth0Domain"]?.toString() ?: ""
+        val auth0Scheme = localProperties["auth0Scheme"]?.toString() ?: ""
+        
+        manifestPlaceholders["auth0Domain"] = auth0Domain
+        manifestPlaceholders["auth0Scheme"] = auth0Scheme
     }
 
     buildTypes {
