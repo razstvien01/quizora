@@ -6,4 +6,5 @@ class Env {
   static String get auth0ClientId => dotenv.env['AUTH0_CLIENT_ID']!;
   static String get auth0ApiIdentifier => dotenv.env['AUTH0_API_IDENTIFIER']!;
   static String get auth0RedirectUri => dotenv.env['AUTH0_REDIRECT_URI']!;
+  static String get auth0Scheme => dotenv.env['AUTH0_SCHEME'] ?? 'quizora';
 }
