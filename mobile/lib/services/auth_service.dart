@@ -17,7 +17,8 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    await auth0.webAuthentication().logout();
+    await auth0.webAuthentication(scheme: Env.auth0Scheme).logout();
+
     await storage.deleteAll();
   }
 
