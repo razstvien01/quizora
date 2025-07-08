@@ -22,6 +22,6 @@ tasks.register<Delete>("clean") {
 
 buildscript {
     dependencies {
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.14.0, 0.99.99]'
+        classpath 'com.google.gms:google-services:4.3.15' 
     }
 }
