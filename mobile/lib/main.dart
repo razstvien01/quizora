@@ -25,11 +25,6 @@ Future<void> main() async {
       options.environment = dotenv.env['ENVIRONMENT'] ?? 'development';
     },
     appRunner: () {
-      // 🚨 Simulate a crash after 3 seconds
-      Future.delayed(const Duration(seconds: 3), () {
-        throw Exception('💥 Test Sentry crash');
-      });
-
       runZonedGuarded(() => runApp(const ProviderScope(child: QuizoraApp())), (
         error,
         stackTrace,
