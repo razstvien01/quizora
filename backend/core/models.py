@@ -5,6 +5,8 @@ class User(models.Model):
   email = models.EmailField()
   name = models.CharField(max_length=255)
   role = models.CharField(max_length=64, default='student')
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
   
   def __str__(self):
     return self.email
