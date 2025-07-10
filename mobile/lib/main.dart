@@ -17,7 +17,6 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
   await initFCM();
 
-  // runApp(const ProviderScope(child: QuizoraApp()));
   await SentryFlutter.init(
     (options) {
       options.dsn = dotenv.env['SENTRY_DSN'];
