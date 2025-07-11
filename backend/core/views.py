@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from .models import User
+from backend.users.models import User
 from .auth import get_token_auth_header, decode_jwt, fetch_user_info
 from core.constants import ALLOWED_ROLES
 
