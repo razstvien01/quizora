@@ -20,3 +20,6 @@ staticfiles/
 # **/migra**
 
 **/.env*
+
+backup.sql
+db.sqlite3
