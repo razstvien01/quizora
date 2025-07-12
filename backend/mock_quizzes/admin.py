@@ -1,3 +1,4 @@
 from django.contrib import admin
+from mock_quizzes.models import MockQuiz
 
-# Register your models here.
+admin.site.register(MockQuiz)
