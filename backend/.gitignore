@@ -10,7 +10,6 @@ __pycache__/
 db.sqlite3
 media/
 staticfiles/
-.env
 
 # Migrations (optional: you might want to keep these if working in a team)
 **/migrations/__pycache__/
@@ -19,3 +18,5 @@ staticfiles/
 **/migrations/*.pyd
 # Uncomment the next line to ignore all migrations
 # **/migra**
+
+**/.env*
