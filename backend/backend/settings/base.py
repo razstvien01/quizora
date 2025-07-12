@@ -1,7 +1,14 @@
 from pathlib import Path
-from decouple import config
+from decouple import Config, RepositoryEnv
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env_file = ".env.local"
+if os.environ.get("DJANGO_ENV") == "docker":
+    env_file = ".env.docker"
+
+config = Config(repository=RepositoryEnv(os.path.join(BASE_DIR, env_file)))
 
 SECRET_KEY = config('SECRET_KEY')
 
