@@ -13,6 +13,8 @@ AUTH0_API_IDENTIFIER = config('AUTH0_API_IDENTIFIER')
 STATIC_URL = 'static/'
 STATIC_ROOT = '/app/staticfiles'
 
+AUTH_USER_MODEL = 'users.User'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
