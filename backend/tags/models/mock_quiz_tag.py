@@ -1,4 +1,5 @@
-from attempts import models
+from django.db import models
+
 from mock_quizzes.models import MockQuiz
 from tags.models.tag import Tag
 
