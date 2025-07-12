@@ -3,7 +3,7 @@ from django.db import models
 from mock_quizzes.models import MockQuiz
 from django.core.exceptions import ValidationError
 
-class Questions(models.Model):
+class Question(models.Model):
     QUESTION_TYPES = (
         ('MCQ', 'Multiple Choice'),
         ('TF', 'True/False'),
