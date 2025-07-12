@@ -1,7 +1,14 @@
 from pathlib import Path
-from decouple import config
+from decouple import Config, RepositoryEnv
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env_file = ".env.local"
+if os.environ.get("DJANGO_ENV") == "docker":
+    env_file = ".env.docker"
+
+config = Config(repository=RepositoryEnv(os.path.join(BASE_DIR, env_file)))
 
 SECRET_KEY = config('SECRET_KEY')
 
@@ -13,16 +20,28 @@ AUTH0_API_IDENTIFIER = config('AUTH0_API_IDENTIFIER')
 STATIC_URL = 'static/'
 STATIC_ROOT = '/app/staticfiles'
 
+AUTH_USER_MODEL = 'users.User'
+
 INSTALLED_APPS = [
-    'core',
-    'rest_framework',
-    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'django_extensions',
+    "debug_toolbar",
+    
+    'attempts',
+    'audit_logs',
+    'core',
+    'mock_quizzes',
+    'questions',
+    'tags',
+    'user_settings',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -34,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -62,7 +83,7 @@ DATABASES = {
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
+        'HOST': config('DB_HOST', 'localhost'),
         'PORT': config('DB_PORT', cast=int),
     }
 }
