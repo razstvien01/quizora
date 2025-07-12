@@ -35,11 +35,11 @@ class Questions(models.Model):
         #? Validation Logic
         if self.type in ['MCQ', 'MATCH', 'ORDER', 'MA'] and not self.choices:
             raise ValidationError(f"Choices are required for {self.get_type_display()} type.")
-        if self.type in ['MCQ', 'TF', 'FIB', 'IDF'] and not self.correct_answers:
+        if self.type in ['MCQ', 'TF', 'FIB', 'IDF'] and not self.correct_answer:
             raise ValidationError(f"Correct answers are required for {self.get_type_display()} type.")
         if self.type == 'TF':
             valid_tf = ['True', 'False', True, False]
-            if self.correct_answers not in valid_tf and str(self.correct_answers).lower() not in ['true', 'false']:
+            if self.correct_answer not in valid_tf and str(self.correct_answer).lower() not in ['true', 'false']:
                 raise ValidationError("True/False questions must have corrrect answer of 'True' or 'False'.")
             
     def __str__(self):
