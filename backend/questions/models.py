@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from backend.mock_quizzes.models import MockQuiz
+from mock_quizzes.models import MockQuiz
 from django.core.exceptions import ValidationError
 
 class Questions(models.Model):
