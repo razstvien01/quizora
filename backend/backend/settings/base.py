@@ -14,15 +14,24 @@ STATIC_URL = 'static/'
 STATIC_ROOT = '/app/staticfiles'
 
 INSTALLED_APPS = [
-    'core',
-    'rest_framework',
-    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'rest_framework',
+    'corsheaders',
+    
+    'attempts',
+    'audit_logs',
+    'core',
+    'mock_quizzes',
+    'questions',
+    'tags',
+    'user_settings',
+    'users',
 ]
 
 MIDDLEWARE = [
