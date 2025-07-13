@@ -1,5 +1,5 @@
 services:
-  db:
+  postgre:
     image: postgres:15
     container_name: quizora_db
     restart: always
@@ -12,6 +12,18 @@ services:
     ports:
       - "5432:5432"
 
+  mongo:
+    image: mongo:6.0
+    container_name: quizora_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: quizora_mongo
+      MONGO_INITDB_ROOT_PASSWORD: quizora_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
   backend:
     build:
       context: ./backend
@@ -23,7 +35,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - postgre
+      - mongo
     env_file:
       - ./backend/backend/.env.docker
     environment:
@@ -43,3 +56,4 @@ services:
 volumes:
   pgdata:
   static_volume:
+  mongodata:
