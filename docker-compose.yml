@@ -16,13 +16,13 @@ services:
     image: mongo:6.0
     container_name: quizora_mongo
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: quizora_mongo
-      MONGO_INITDB_ROOT_PASSWORD: quizora_mongo
+    env_file:
+      - ./backend/backend/.env.local
     ports:
       - "27017:27017"
     volumes:
       - mongodata:/data/db
+
 
   backend:
     build:
