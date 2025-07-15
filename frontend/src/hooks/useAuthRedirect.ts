@@ -1,11 +1,12 @@
 import { ROUTES } from "@/constants/routes";
+import { useAuthActions } from "@/lib/auth";
 import { registerUser } from "@/services/authService";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function useAuthRedirect(options?: { requireAuth?: boolean }) {
-  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, isLoading, getAccessTokenSilently, handleLogout } =
+    useAuthActions();
   const navigate = useNavigate();
   const didRegisterRef = useRef(false); //? prevent multiple triggers
 
@@ -22,7 +23,7 @@ export function useAuthRedirect(options?: { requireAuth?: boolean }) {
         navigate(ROUTES.DASHBOARD);
       } catch (error) {
         console.error("Auth redirect/register error:", error);
-        if (options?.requireAuth) navigate(ROUTES.HOME);
+        if (options?.requireAuth) handleLogout();
       }
     };
 

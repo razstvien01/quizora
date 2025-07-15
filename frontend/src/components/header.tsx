@@ -4,11 +4,11 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuthActions } from "@/lib/auth";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const { loginWithRedirect } = useAuth0();
+  const { handleLogin } = useAuthActions();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -47,15 +47,7 @@ export default function SiteHeader() {
               Community
             </button>
           </div>
-          <Button
-            onClick={async () =>
-              await loginWithRedirect({
-                appState: { returnTo: "/dashboard" },
-              })
-            }
-          >
-            Get Started
-          </Button>
+          <Button onClick={async () => await handleLogin()}>Get Started</Button>
         </nav>
 
         {/* Mobile Navigation */}
@@ -87,11 +79,7 @@ export default function SiteHeader() {
                 Community
               </button>
               <Button
-                onClick={async () =>
-                  await loginWithRedirect({
-                    appState: { returnTo: "/dashboard" },
-                  })
-                }
+                onClick={async () => await handleLogin()}
                 className="w-full bg-amber-200"
               >
                 Get Started

@@ -13,6 +13,7 @@ import { benefits } from "@/constants/benefits";
 import { features } from "@/constants/features";
 import { stats } from "@/constants/stats";
 import { useAuthRedirect } from "@/hooks/useAuthRedirect";
+import { useAuthActions } from "@/lib/auth";
 import {
   ArrowRight,
   CheckCircle,
@@ -26,6 +27,8 @@ import { Helmet } from "react-helmet-async";
 
 function Home() {
   useAuthRedirect();
+
+  const { handleLogin } = useAuthActions();
 
   return (
     <>
@@ -190,8 +193,8 @@ function Home() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-center">
-                    Receive a customized study plan with targeted mock quizzes and
-                    learning materials
+                    Receive a customized study plan with targeted mock quizzes
+                    and learning materials
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -331,7 +334,11 @@ function Home() {
                 Quizora's AI-powered platform
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Button size="lg" className="h-11 px-8">
+                <Button
+                  size="lg"
+                  className="h-11 px-8"
+                  onClick={async () => await handleLogin()}
+                >
                   <Zap className="mr-2 h-4 w-4" />
                   Get Started Free
                   <ArrowRight className="ml-2 h-4 w-4" />
