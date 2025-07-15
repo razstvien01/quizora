@@ -3,7 +3,7 @@ from django.db import models
 
 from users.models import User
 
-class UserSettings(models.Model):
+class UserSetting(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='settings')
     receive_notifications = models.BooleanField(default=True)
@@ -14,3 +14,6 @@ class UserSettings(models.Model):
     
     def __str__(self):
         return f"UserSettings {id}"
+    
+    class Meta:
+        db_table = 'user_settings'

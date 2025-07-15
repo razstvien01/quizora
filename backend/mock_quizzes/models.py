@@ -11,3 +11,6 @@ class MockQuiz(models.Model):
     
     def __str__(self):
         return f"Mock Quiz {self.id}"
+    
+    class Meta:
+        db_table = 'mock_quizzes'

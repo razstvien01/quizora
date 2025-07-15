@@ -11,4 +11,5 @@ class MockQuizTag(models.Model):
         return f"MockQuizTag {self.mock_quiz} - {self.tag}"
     
     class Meta:
+        db_table = 'mock_quiz_tags'
         unique_together = ('mock_quiz', 'tag')

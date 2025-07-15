@@ -9,3 +9,6 @@ class Tag(models.Model):
     
     def __str__(self):
         return f"Tag {self.id} - {self.name}"
+    
+    class Meta:
+        db_table = 'tags'

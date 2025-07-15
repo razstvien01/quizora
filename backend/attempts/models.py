@@ -12,3 +12,6 @@ class Attempt(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
     answers = models.JSONField()
+    
+    class Meta:
+        db_table = 'attempts'

@@ -12,3 +12,6 @@ class AuditLog(models.Model):
     
     def __str__(self):
         return f"AuditLog {self.id}"
+    
+    class Meta:
+        db_table = 'audit_logs'

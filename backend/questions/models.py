@@ -44,3 +44,6 @@ class Question(models.Model):
             
     def __str__(self):
         return f"Question {self.id} - {self.text[:50]}"
+    
+    class Meta:
+        db_table = 'questions'
