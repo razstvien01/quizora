@@ -1,0 +1,10 @@
+from users.models import User
+
+class UserRepository:
+    @staticmethod
+    def get_by_email(email: str):
+        return User.objects.filter(email=email).first()
+    
+    @staticmethod
+    def get_by_auth_id(auth_id: str):
+        return User.objects.filter(auth_id=auth_id).first()
