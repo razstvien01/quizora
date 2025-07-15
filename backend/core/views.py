@@ -41,4 +41,4 @@ class AuthUser(APIView):
       "name": user.name,
       "role": user.role,
       "new": created
-    })
+    }, status=200)
