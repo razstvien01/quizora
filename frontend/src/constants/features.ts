@@ -10,9 +10,9 @@ import {
 export const features = [
   {
     icon: Target,
-    title: "Mock Exam Engine",
+    title: "mock quiz Engine",
     description:
-      "Dynamic mock exam generation based on your performance with intelligent question pooling and session tracking.",
+      "Dynamic mock quiz generation based on your performance with intelligent question pooling and session tracking.",
     color: "text-blue-500",
   },
   {
@@ -33,7 +33,7 @@ export const features = [
     icon: Users,
     title: "Community & Collaboration",
     description:
-      "Share mock exams, participate in forums, and access a marketplace of community-created content.",
+      "Share mock quizzes, participate in forums, and access a marketplace of community-created content.",
     color: "text-orange-500",
   },
   {

@@ -35,11 +35,11 @@ function Home() {
         </title>
         <meta
           name="description"
-          content="Quizora is a modern, AI-enhanced learning platform that helps learners prepare smarter for exams through adaptive learning, dynamic mock exams, and intelligent study aids."
+          content="Quizora is a modern, AI-enhanced learning platform that helps learners prepare smarter for exams through adaptive learning, dynamic mock quizzes, and intelligent study aids."
         />
         <meta
           name="keywords"
-          content="AI learning, mock exams, adaptive learning, study platform, exam preparation"
+          content="AI learning, mock quizzes, adaptive learning, study platform, exam preparation"
         />
       </Helmet>
       <div className="flex min-h-screen flex-col">
@@ -58,7 +58,7 @@ function Home() {
                 </span>
               </h1>
               <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-                Quizora combines adaptive learning, dynamic mock exams, and
+                Quizora combines adaptive learning, dynamic mock quizzes, and
                 intelligent study aids to help you achieve better results in
                 less time.
               </p>
@@ -190,7 +190,7 @@ function Home() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-center">
-                    Receive a customized study plan with targeted mock exams and
+                    Receive a customized study plan with targeted mock quizzes and
                     learning materials
                   </CardDescription>
                 </CardContent>

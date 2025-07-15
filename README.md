@@ -1,6 +1,6 @@
 # 📘 Quizora
 
-**Quizora** is a modern, AI-enhanced learning platform that helps learners prepare smarter for exams through adaptive learning, dynamic mock exams, collaborative tools, and intelligent study aids.
+**Quizora** is a modern, AI-enhanced learning platform that helps learners prepare smarter for exams through adaptive learning, dynamic mock quizzes, collaborative tools, and intelligent study aids.
 
 > 🚀 Empowering students through personalized learning experiences.
 
@@ -8,8 +8,8 @@
 
 ## 🧠 Key Features
 
-### 🎯 Mock Exam Engine
-- Dynamic mock exam generation based on user performance
+### 🎯 mock quiz Engine
+- Dynamic mock quiz generation based on user performance
 - Question pool management with tagging (topic, difficulty, etc.)
 - Exam session tracking (pause/resume support)
 
@@ -24,7 +24,7 @@
 - Export notes and flashcards as PDF or Markdown
 
 ### 👥 Community & Collaboration
-- Upload and share mock exams via the marketplace
+- Upload and share mock quizzes via the marketplace
 - Tag and filter shared modules (subject, grade level, popularity)
 - Rate/review content and participate in community forums
 
@@ -39,7 +39,7 @@
 - Sync on reconnection
 
 ### 📈 Analytics & Reports
-- Mock exam performance reports (PDF, CSV exports)
+- mock quiz performance reports (PDF, CSV exports)
 - Usage analytics for platform improvement
 
 ### 🔐 Security & System
@@ -140,7 +140,7 @@ Quizora is proudly open source and welcomes **contributors, testers, educators, 
 
 * Submit PRs and issues
 * Suggest improvements to the AI logic
-* Share mock exam content modules
+* Share mock quiz content modules
 * Translate or localize the platform
 
 *We believe in building this platform for and with the community.*

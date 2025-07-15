@@ -20,7 +20,7 @@ class FeaturesPage extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Text(
-            'Our AI tailors your learning journey, creating custom study plans, mock exams, and progress tracking to help you master your subjects.',
+            'Our AI tailors your learning journey, creating custom study plans, mock quizzes, and progress tracking to help you master your subjects.',
             style: TextStyle(color: Colors.grey, fontSize: 16),
             textAlign: TextAlign.center,
           ),

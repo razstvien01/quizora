@@ -5,7 +5,7 @@ function Explore() {
     <>
       <Helmet>
         <title>Explore | Quizora</title>
-        <meta name="description" content="Browse mock exams and categories." />
+        <meta name="description" content="Browse mock quizzes and categories." />
       </Helmet>
       <h1>Explore Page</h1>
     </>

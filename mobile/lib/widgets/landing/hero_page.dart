@@ -33,7 +33,7 @@ class HeroPage extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           const Text(
-            'Quizora combines adaptive learning, mock exams, and study tools to help you learn better and faster.',
+            'Quizora combines adaptive learning, mock quizzes, and study tools to help you learn better and faster.',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey, fontSize: 16),
           ),
