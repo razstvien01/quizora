@@ -11,11 +11,8 @@ import 'package:quizora/services/firebase_messaging_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
-  await initFCM();
+  SentryWidgetsFlutterBinding.ensureInitialized();
 
   await SentryFlutter.init(
     (options) {
@@ -23,25 +20,29 @@ Future<void> main() async {
       options.tracesSampleRate = 1.0;
       options.environment = dotenv.env['ENVIRONMENT'] ?? 'development';
     },
-    appRunner: () {
-      runZonedGuarded(() => runApp(const ProviderScope(child: QuizoraApp())), (
-        error,
-        stackTrace,
-      ) async {
-        await Sentry.captureException(error, stackTrace: stackTrace);
-      });
+    appRunner: () async {
+      await Firebase.initializeApp();
+      await initFCM();
+
+      FlutterError.onError = (FlutterErrorDetails details) {
+        FlutterError.presentError(details);
+        Sentry.captureException(details.exception, stackTrace: details.stack);
+      };
+
+      // This is safe; Sentry sets this internally too for Flutter >=3.3
+      PlatformDispatcher.instance.onError = (error, stack) {
+        Sentry.captureException(error, stackTrace: stack);
+        return true;
+      };
+
+      runApp(
+        DefaultAssetBundle(
+          bundle: SentryAssetBundle(),
+          child: const ProviderScope(child: QuizoraApp()),
+        ),
+      );
     },
   );
-
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-    Sentry.captureException(details.exception, stackTrace: details.stack);
-  };
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    Sentry.captureException(error, stackTrace: stack);
-    return true;
-  };
 }
 
 class QuizoraApp extends ConsumerWidget {
