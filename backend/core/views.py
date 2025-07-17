@@ -14,7 +14,7 @@ class AuthUser(APIView):
         
         if not email or not auth_id:
             return Response({
-                "error": "Missinghg required fields"},
+                "error": "Missing required fields"},
                 status=400
             )
         
