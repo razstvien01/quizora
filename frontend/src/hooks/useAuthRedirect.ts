@@ -31,5 +31,12 @@ export function useAuthRedirect(options?: { requireAuth?: boolean }) {
       syncAndRedirect();
     } else if (!isLoading && !isAuthenticated && options?.requireAuth)
       navigate(ROUTES.HOME);
-  }, [isAuthenticated, isLoading, getAccessTokenSilently, navigate, options]);
+  }, [
+    isAuthenticated,
+    isLoading,
+    getAccessTokenSilently,
+    navigate,
+    options,
+    handleLogout,
+  ]);
 }
