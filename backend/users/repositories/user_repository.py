@@ -1,4 +1,4 @@
-from users.models import User
+from users.models.user import User
 
 class UserRepository:
     @staticmethod
@@ -8,3 +8,7 @@ class UserRepository:
     @staticmethod
     def get_by_auth_id(auth_id: str):
         return User.objects.filter(auth_id=auth_id).first()
+    
+    @staticmethod
+    def get_all() -> list[User]:
+        return list(User.objects.all())
