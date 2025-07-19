@@ -2,7 +2,7 @@ import uuid
 from django.db import models
 
 from mock_quizzes.models import MockQuiz
-from users.models import User
+from users.models.user import User
 
 class Attempt(models.Model): 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
