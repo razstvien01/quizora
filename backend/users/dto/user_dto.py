@@ -9,5 +9,4 @@ class UserDto:
     picture: Optional[str] = None
     is_active: bool = True
     is_superuser: bool = False
-    role: str = "user"
-    auth_id: str = field(default_factory=str)
+    role: str = "student"
