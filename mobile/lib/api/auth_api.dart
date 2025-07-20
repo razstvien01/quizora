@@ -5,8 +5,8 @@ class AuthApi {
   static final Dio dio = Dio(
     BaseOptions(
       baseUrl: Env.apiUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 3),
+      receiveTimeout: const Duration(seconds: 3),
       headers: {'Content-Type': 'application/json'},
     ),
   );
