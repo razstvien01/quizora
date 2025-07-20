@@ -1,22 +1,28 @@
+import 'package:quizora/models/identity.dart';
+
 class User {
-  final String id;
-  final String name;
   final String email;
+  final String firstName;
+  final String lastName;
+  final String? picture;
+  final String role;
+  final Identity identity;
 
-  User({required this.id, required this.name, required this.email});
+  User({
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    this.picture,
+    required this.role,
+    required this.identity,
+  });
 
-  @override
-  String toString() {
-    return 'User(id: $id, name: $name, email: $email)';
-  }
-}
-
-User? parseUser(Map<String, dynamic> json) {
-  if (json.isEmpty) return null;
-
-  return User(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    email: json['email'] as String,
-  );
+  Map<String, dynamic> toJson() => {
+    'email': email,
+    'first_name': firstName,
+    'last_name': lastName,
+    'pictures': picture,
+    'role': role,
+    'identity': identity.toJson(),
+  };
 }
