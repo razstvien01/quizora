@@ -1,13 +1,14 @@
 import 'dart:convert';
-
+import 'dart:developer' as developer;
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:quizora/api/auth_api.dart';
 import 'package:quizora/constants/env.dart';
+import 'package:quizora/dto/identity_dto.dart';
+import 'package:quizora/dto/user_dto.dart';
 
 class AuthService {
   final auth0 = Auth0(Env.auth0Domain, Env.auth0ClientId);
-
   final storage = const FlutterSecureStorage();
 
   Future<Credentials?> login() async {
@@ -19,21 +20,32 @@ class AuthService {
 
     try {
       final idTokenParts = credentials.idToken.split('.');
-
       if (idTokenParts.length == 3) {
         final decoded = utf8.decode(
           base64Url.decode(base64Url.normalize(idTokenParts[1])),
         );
         final payload = json.decode(decoded);
-
+        
         final email = payload['email'];
-        final username = payload['name'];
-        final authId = payload['sub'];
+        final sub = payload['sub'];
+        final firstName = payload['given_name'];
+        final lastName = payload['family_name'];
+        final picture = payload['picture'];
 
-        await registeringUserToBackend(email, username, authId);
+        final identity = IdentityDto.fromSub(sub);
+        final userDto = UserDto(
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          role: "student",
+          identity: identity,
+          picture: picture
+        );
+
+        await registeringUserToBackend(userDto);
       }
     } catch (error) {
-      print(error);
+      developer.log(error.toString());
     }
 
     return credentials;
@@ -54,22 +66,16 @@ class AuthService {
     return await storage.read(key: 'access_token');
   }
 
-  Future<void> registeringUserToBackend(
-    String email,
-    String username,
-    String authId,
-  ) async {
-    final response = await AuthApi.registerUser({
-      'email': email,
-      'username': username,
-      'role': 'student',
-      'auth_id': authId,
-    });
+  Future<void> registeringUserToBackend(UserDto userDto) async {
+    final response = await AuthApi.registerUser(userDto.toJson());
 
     if (response.statusCode != 200) {
-      print("Registration failed: ${response.statusMessage}");
+      developer.log(
+        "Registration failed: ${response.statusMessage}",
+        name: 'AuthService',
+      );
     } else {
-      print("User registered: ${response.data}");
+      developer.log("User registered: ${response.data}", name: 'AuthService');
     }
   }
 }
