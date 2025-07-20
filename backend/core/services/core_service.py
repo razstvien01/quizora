@@ -1,17 +1,27 @@
-from core.repositories.core_repository import CoreRepository
-from users.repositories.user_repository import UserRepository
+from users.repositories import UserIdentityRepository, UserRepository
+from users.dto import UserDto, UserIdentityDto
+from users.models import User, UserIdentity
+from users.mappers import UserMapper, UserIdentityMMapper
 
 class CoreService:
     @staticmethod
-    def get_or_create_user(email, name, role, auth_id):
-        user = UserRepository.get_by_email(email=email)
+    def update_or_create_user(user_dto: UserDto, identity_dto: UserIdentityDto) -> User:
+        identity = UserIdentityRepository.get_by_provider_and_auth_id(
+            provider=identity_dto.provider,
+            auth_id=identity_dto.auth_id
+        )
         
-        if user:
-            if user.auth_id != auth_id:
-                user = CoreRepository.update_auth_id(user, auth_id)
-                
-            return user, False
+        if identity:
+            user = identity.user
+            user = UserMapper.update_model_from_dto(user, user_dto)
         else:
-            new_user = CoreRepository.create_user(email, name, role, auth_id)
+            user = UserMapper.create_user_from_dto(user_dto)
             
-            return new_user, True
+        UserRepository.save(user)
+        
+        if not identity:
+            identity_dto.user = user
+            identity = UserIdentityMMapper.from_dto(identity_dto)
+            UserIdentityRepository.save(identity)
+            
+        return user
