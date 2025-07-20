@@ -1,12 +1,11 @@
 from users.dto.user_dto import UserDto
 from users.models.user import User
-from core.repositories.core_repository import CoreRepository
 from users.models.identity import UserIdentity
-    
+
 class UserMapper:
     @staticmethod
     def create_user_from_dto(dto: UserDto) -> User:
-        user = User(
+        return User(
             email=dto.email,
             first_name=dto.first_name,
             last_name=dto.last_name,
@@ -16,8 +15,6 @@ class UserMapper:
             role=dto.role,
             auth_id=dto.auth_id,
         )
-        
-        return CoreRepository.create_user(user)
         
     @staticmethod
     def user_model_to_dto(user: User) -> UserDto:
