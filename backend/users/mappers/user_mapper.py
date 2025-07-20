@@ -1,6 +1,7 @@
 from users.dto.user_dto import UserDto
 from users.models.user import User
 from core.repositories.core_repository import CoreRepository
+from users.models.identity import UserIdentity
     
 class UserMapper:
     @staticmethod
@@ -39,4 +40,5 @@ class UserMapper:
         user.is_active = dto.is_active
         user.is_superuser = dto.is_superuser
         user.role = dto.role
-        return user
+        
+        return user;
