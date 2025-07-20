@@ -1,6 +1,7 @@
 asgiref==3.8.1
 certifi==2025.6.15
 charset-normalizer==3.4.2
+debugpy==1.8.15
 Django==5.2.3
 django-cors-headers==4.7.0
 django-debug-toolbar==5.2.0
