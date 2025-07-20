@@ -12,3 +12,12 @@ class UserRepository:
     @staticmethod
     def get_all() -> list[User]:
         return list(User.objects.all())
+    
+    @staticmethod
+    def create_user(user: User):
+        return user.save() or user
+    
+    @staticmethod
+    def save(user: User) -> User:
+        user.save()
+        return user
