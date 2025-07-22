@@ -19,6 +19,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run migrations, collect static files, then run Gunicorn
-CMD bash -c "python manage.py migrate --noinput && \
-             python manage.py collectstatic --noinput && \
-             gunicorn backend.wsgi:application --bind 0.0.0.0:8000"
+CMD ["python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "--wait-for-client", "manage.py", "runserver", "0.0.0.0:8000"]
