@@ -11,9 +11,8 @@ class UserMapper:
             last_name=dto.last_name,
             picture=dto.picture,
             is_active=dto.is_active,
-            is_super_user=dto.is_super_user,
+            is_superuser=dto.is_superuser,
             role=dto.role,
-            auth_id=dto.auth_id,
         )
         
     @staticmethod
@@ -24,7 +23,7 @@ class UserMapper:
             last_name=user.last_name,
             picture=user.picture,
             is_active=user.is_active,
-            is_super_user=user.is_super_user,
+            is_superuser=user.is_superuser,
             role=user.role,
             auth_id=user.auth_id
         )
