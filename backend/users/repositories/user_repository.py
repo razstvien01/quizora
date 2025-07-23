@@ -10,6 +10,10 @@ class UserRepository:
         return User.objects.filter(auth_id=auth_id).first()
     
     @staticmethod
+    def get_by_id(id: int):
+        return User.objects.filter(id=id).first()
+    
+    @staticmethod
     def get_all() -> list[User]:
         return list(User.objects.all())
     
