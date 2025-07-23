@@ -11,12 +11,12 @@ logger = logging.getLogger(__name__)
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
     
-    def get(self, request, email):
+    def get(self, request, id):
         try:
-            user = UserRepository.get_by_email(email)
+            user = UserRepository.get_by_id(id)
             
             if not user:
-                logger.warning(f"User with email {email} not found.")
+                logger.warning(f"User with ID {id} not found.")
                 return Response(
                     {"error": "User not found"},
                     status=status.HTTP_404_NOT_FOUND
@@ -35,7 +35,7 @@ class UserView(APIView):
             )
             
         except Exception as e:
-            logger.error(f"Error retrieving user by email {email}: {str(e)}", exc_info=True)
+            logger.error(f"Error retrieving user by ID {id}: {str(e)}", exc_info=True)
             
             return Response(
                 {
