@@ -27,4 +27,14 @@ class UserDto {
     'identity': identity.toJson(),
     'provider': identity.provider,
   };
+
+  factory UserDto.fromJson(Map<String, dynamic> json) {
+    return UserDto(
+      email: json['email'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      role: json['role'],
+      identity: IdentityDto.fromJson(json['identity']),
+    );
+  }
 }
