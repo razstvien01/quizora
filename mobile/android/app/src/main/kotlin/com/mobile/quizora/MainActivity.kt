@@ -1,4 +1,4 @@
-package com.quizora.mobile
+package com.mobile.quizora
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -15,7 +15,7 @@ plugins {
 
 
 android {
-    namespace = "com.quizora.mobile"
+    namespace = "com.mobile.quizora"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.quizora.mobile"
+        applicationId = "com.mobile.quizora"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
