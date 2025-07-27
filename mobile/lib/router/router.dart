@@ -8,12 +8,12 @@ import 'package:quizora/screens/splash_screen.dart';
 import 'package:quizora/providers/auth_provider.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
+  final authNotifier = ref.read(authStateProvider.notifier);
+
   return GoRouter(
     initialLocation: AppRoutes.splash,
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(
-      ref.watch(authStateProvider.notifier).stream,
-    ),
+    refreshListenable: GoRouterRefreshStream(authNotifier.stream),
     routes: [
       GoRoute(
         path: AppRoutes.splash,
@@ -29,15 +29,16 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
     redirect: (context, state) {
-      final isLoggedIn = ref.read(authStateProvider);
-      final goingTo = state.uri.toString();
+      final user = ref.read(authStateProvider);
+      final isSplash = state.uri.toString() == AppRoutes.splash;
+      final isLanding = state.uri.toString() == AppRoutes.landing;
 
-      if (!isLoggedIn && goingTo != AppRoutes.landing) {
-        return AppRoutes.landing;
-      }
-
-      if (isLoggedIn && goingTo == AppRoutes.landing) {
-        return AppRoutes.dashboard;
+      if (user == null) {
+        if (!isLanding) return AppRoutes.landing;
+      } else {
+        if (isLanding || isSplash) {
+          return AppRoutes.dashboard;
+        }
       }
 
       return null;
