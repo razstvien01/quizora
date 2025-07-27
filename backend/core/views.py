@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from users.dto import UserDto, UserIdentityDto
 from core.services import CoreService
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, UserIdentitySerializer
 import logging
 
 logger = logging.getLogger(__name__)
@@ -43,16 +43,18 @@ class AuthUser(APIView):
                 user=None
             )
             
-            created_user = CoreService.update_or_create_user(user_dto, identity_dto)
+            created_user, identity = CoreService.update_or_create_user(user_dto, identity_dto)
             
             serialized_user = UserSerializer(created_user)
+            serialized_identity = UserIdentitySerializer(identity)
             
             logger.info("User successfully created or updated: ID=%s", created_user.id)
             
             return Response(
                 {
                     "message": "User created or updated",
-                    "user": serialized_user.data
+                    "user": serialized_user.data,
+                    "identity": serialized_identity.data
                 },
                 status=status.HTTP_200_OK
             )
