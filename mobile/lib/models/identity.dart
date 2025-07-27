@@ -1,17 +1,14 @@
 class Identity {
   final String provider;
-  final String providerUserId;
+  final String authId;
 
-  Identity({required this.provider, required this.providerUserId});
+  Identity({required this.provider, required this.authId});
 
   factory Identity.fromJson(Map<String, dynamic> json) {
-    return Identity(
-      provider: json['provider'],
-      providerUserId: json['provider_user_id'],
-    );
+    return Identity(provider: json['provider'], authId: json['auth_id']);
   }
 
   Map<String, dynamic> toJson() {
-    return {'provider': provider, 'provider_user_id': providerUserId};
+    return {'provider': provider, 'auth_id': authId};
   }
 }
