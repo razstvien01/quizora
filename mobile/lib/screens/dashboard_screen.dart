@@ -27,10 +27,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authStateProvider);
+    
+    if(user == null) {
+      return const Center(child: CircularProgressIndicator(),);
+    }
+    
+    
     Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: Text('Welcome, ${user.firstName}'),
         actions: [
           IconButton(
             onPressed: _handleLogout,
