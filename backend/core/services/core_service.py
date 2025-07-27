@@ -24,4 +24,4 @@ class CoreService:
             identity = UserIdentityMMapper.from_dto(identity_dto)
             UserIdentityRepository.save(identity)
             
-        return user
+        return user, identity
