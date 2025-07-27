@@ -11,7 +11,20 @@ class AuthService {
   final auth0 = Auth0(Env.auth0Domain, Env.auth0ClientId);
   final storage = const FlutterSecureStorage();
 
-  Future<Credentials?> login() async {
+  Future<UserDto?> getCurrentUser() async {
+    final userJson = await storage.read(key: 'user');
+    if (userJson == null) return null;
+
+    try {
+      final userMap = jsonDecode(userJson);
+      return UserDto.fromJson(userMap);
+    } catch (e) {
+      developer.log("Failed to decode user: $e", name: "AuthService");
+      return null;
+    }
+  }
+
+  Future<UserDto?> login() async {
     final credentials = await auth0.webAuthentication().login(
       redirectUrl: Env.auth0RedirectUri,
     );
@@ -25,7 +38,7 @@ class AuthService {
           base64Url.decode(base64Url.normalize(idTokenParts[1])),
         );
         final payload = json.decode(decoded);
-        
+
         final email = payload['email'];
         final sub = payload['sub'];
         final firstName = payload['given_name'];
@@ -39,16 +52,24 @@ class AuthService {
           lastName: lastName,
           role: "student",
           identity: identity,
-          picture: picture
+          picture: picture,
         );
 
-        await registeringUserToBackend(userDto);
+        await storage.write(key: 'user', value: jsonEncode(userDto));
+
+        final success = await registeringUserToBackend(userDto);
+        if (!success) {
+          await logout();
+          return null;
+        }
+
+        return userDto;
       }
     } catch (error) {
       developer.log(error.toString());
     }
 
-    return credentials;
+    return null;
   }
 
   Future<void> logout() async {
@@ -66,7 +87,7 @@ class AuthService {
     return await storage.read(key: 'access_token');
   }
 
-  Future<void> registeringUserToBackend(UserDto userDto) async {
+  Future<bool> registeringUserToBackend(UserDto userDto) async {
     final response = await AuthApi.registerUser(userDto.toJson());
 
     if (response.statusCode != 200) {
@@ -74,8 +95,10 @@ class AuthService {
         "Registration failed: ${response.statusMessage}",
         name: 'AuthService',
       );
-    } else {
-      developer.log("User registered: ${response.data}", name: 'AuthService');
+      return false;
     }
+    developer.log("User registered: ${response.data}", name: 'AuthService');
+
+    return true;
   }
 }
