@@ -6,7 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
     identity = serializers.SerializerMethodField()
     
     def get_identity (self, obj):
-        identity = obj.identity
+        identity = obj.identities.first()
         
         if identity:
             return UserIdentitySerializer(identity).data
