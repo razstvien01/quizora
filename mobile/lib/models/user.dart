@@ -24,5 +24,6 @@ class User {
     'pictures': picture,
     'role': role,
     'identity': identity.toJson(),
+    'provider': identity.provider,
   };
 }
