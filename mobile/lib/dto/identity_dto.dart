@@ -18,6 +18,14 @@ class IdentityDto {
     );
   }
 
+  factory IdentityDto.fromJson(Map<String, dynamic> json) {
+    return IdentityDto(
+      provider: json['provider'],
+      providerUserId: json['providerUserId'],
+      authId: json['auth_id'],
+    );
+  }
+
   Map<String, dynamic> toJson() => {
     'provider': provider,
     'auth_id': authId,
