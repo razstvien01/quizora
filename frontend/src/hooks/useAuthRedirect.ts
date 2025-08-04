@@ -1,12 +1,18 @@
 import { ROUTES } from "@/constants/routes";
 import { useAuthActions } from "@/lib/auth";
+import { buildUserDto } from "@/mappers/user.mapper";
 import { registerUser } from "@/services/authService";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function useAuthRedirect(options?: { requireAuth?: boolean }) {
-  const { isAuthenticated, isLoading, getAccessTokenSilently, handleLogout } =
-    useAuthActions();
+  const {
+    isAuthenticated,
+    isLoading,
+    getAccessTokenSilently,
+    handleLogout,
+    user,
+  } = useAuthActions();
   const navigate = useNavigate();
   const didRegisterRef = useRef(false); //? prevent multiple triggers
 
@@ -15,8 +21,9 @@ export function useAuthRedirect(options?: { requireAuth?: boolean }) {
       try {
         const token = await getAccessTokenSilently();
 
-        if (!didRegisterRef.current) {
-          await registerUser(token);
+        if (!didRegisterRef.current && user) {
+          const userDto = buildUserDto(user);
+          await registerUser(token, userDto);
           didRegisterRef.current = true;
         }
 
@@ -38,5 +45,6 @@ export function useAuthRedirect(options?: { requireAuth?: boolean }) {
     navigate,
     options,
     handleLogout,
+    user,
   ]);
 }
